@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y gcc libpq-dev curl && rm -rf /var/lib/a
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+ARG CACHEBUST=1
 COPY . .
 RUN python manage.py collectstatic --noinput || true
 EXPOSE 8000
