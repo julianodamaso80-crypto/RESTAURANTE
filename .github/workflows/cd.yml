@@ -1,0 +1,24 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    needs: []  # adicionar 'test' quando CI estiver validado
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy placeholder
+        run: |
+          echo "Deploy pipeline pronto para configurar"
+          echo "Opcoes: Railway, Render, Heroku, VPS com Docker"
+          echo "Configurar secrets: DEPLOY_KEY, SERVER_HOST, etc."

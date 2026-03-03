@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Tests + Lint
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: restaurante_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/restaurante_test
+      REDIS_URL: redis://localhost:6379/0
+      DJANGO_ENV: test
+      SECRET_KEY: ci-secret-key-not-for-production
+      DJANGO_SETTINGS_MODULE: config.settings_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/api/requirements.txt
+
+      - name: Run ruff lint
+        run: |
+          cd apps/api
+          python -m ruff check .
+
+      - name: Run migrations
+        run: |
+          cd apps/api
+          python manage.py migrate --no-input
+
+      - name: Run tests
+        run: |
+          cd apps/api
+          python -m pytest --tb=short -q
+
+      - name: Upload coverage
+        if: success()
+        run: |
+          cd apps/api
+          python -m pytest --tb=short -q --cov=. --cov-report=xml || true
