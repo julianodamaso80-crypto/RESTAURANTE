@@ -1,3 +1,4 @@
+# cache-bust: 2026-03-03
 """Production settings for the Restaurant ERP API (Easypanel deploy)."""
 
 import os
