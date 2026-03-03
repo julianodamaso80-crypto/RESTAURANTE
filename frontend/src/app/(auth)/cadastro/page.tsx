@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 
@@ -11,6 +11,14 @@ const PLAN_LABELS: Record<string, string> = {
 };
 
 export default function CadastroPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <CadastroForm />
+    </Suspense>
+  );
+}
+
+function CadastroForm() {
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") || "";
   const planLabel = PLAN_LABELS[plan] || "";
