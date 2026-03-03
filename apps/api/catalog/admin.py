@@ -47,7 +47,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ["status", "category__catalog__store__company__tenant"]
     search_fields = ["name", "description"]
     readonly_fields = ["id", "created_at", "updated_at"]
-    inlines = [ModifierOptionInline, ProductChannelMapInline, ProductAvailabilityInline]
+    inlines = [ProductChannelMapInline, ProductAvailabilityInline]
 
     def price_display(self, obj):
         return f"R$ {obj.price_cents / 100:.2f}"
