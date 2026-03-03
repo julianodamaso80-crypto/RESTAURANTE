@@ -49,3 +49,4 @@ MIDDLEWARE.insert(  # noqa: F405
 # Celery Beat
 # ---------------------------------------------------------------------------
 INSTALLED_APPS += ["django_celery_beat"]  # noqa: F405
+
