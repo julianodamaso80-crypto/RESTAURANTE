@@ -106,10 +106,8 @@ function CadastroForm() {
 
       <div className="relative z-10 w-full max-w-sm px-6">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-12 h-12 bg-accent rounded flex items-center justify-center">
-            <span className="text-black font-mono font-bold text-2xl">M</span>
-          </div>
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <img src="/assets/images/logo.png" alt="MesaMestre" width={64} height={64} className="rounded-lg" />
           <span className="text-xl font-mono font-bold text-foreground tracking-wider">
             MESAMESTRE
           </span>

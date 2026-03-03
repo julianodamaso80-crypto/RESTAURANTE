@@ -34,9 +34,9 @@ export function Sidebar() {
       {/* Logo */}
       <Link
         href="/operator"
-        className="w-9 h-9 bg-accent rounded flex items-center justify-center mb-6"
+        className="w-9 h-9 rounded-md overflow-hidden mb-6"
       >
-        <span className="text-black font-mono font-bold text-lg">R</span>
+        <img src="/assets/images/logo.png" alt="MesaMestre" width={36} height={36} />
       </Link>
 
       {/* Navigation */}

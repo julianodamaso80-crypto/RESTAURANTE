@@ -13,7 +13,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Restaurante ERP",
+  title: "MesaMestre",
   description: "ERP SaaS omnichannel para restaurantes",
 };
 
