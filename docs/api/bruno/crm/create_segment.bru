@@ -1,0 +1,30 @@
+meta {
+  name: Create Segment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/crm/segments/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Clientes VIP",
+    "description": "Clientes com mais de 10 pedidos",
+    "rules": {
+      "min_orders": 10
+    }
+  }
+}

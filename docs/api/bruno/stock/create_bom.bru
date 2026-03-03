@@ -1,0 +1,28 @@
+meta {
+  name: Create Bill of Materials
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{base_url}}/api/v1/stock/bom/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "product": "{{product_id}}",
+    "stock_item": "{{stock_item_id}}",
+    "quantity_per_unit": "1.000"
+  }
+}

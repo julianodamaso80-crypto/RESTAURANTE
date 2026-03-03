@@ -1,0 +1,20 @@
+meta {
+  name: List Segments
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/v1/crm/segments/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

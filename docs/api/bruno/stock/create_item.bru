@@ -1,0 +1,30 @@
+meta {
+  name: Create Stock Item
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/stock/items/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Hamburguer Bovino 180g",
+    "sku": "HAMB-BOV-180",
+    "unit": "UN",
+    "min_quantity": "10.000",
+    "max_quantity": "200.000"
+  }
+}

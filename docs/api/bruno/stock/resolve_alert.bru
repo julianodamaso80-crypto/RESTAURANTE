@@ -1,0 +1,20 @@
+meta {
+  name: Resolve Stock Alert
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url}}/api/v1/stock/alerts/{{alert_id}}/resolve/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

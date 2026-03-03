@@ -1,0 +1,27 @@
+meta {
+  name: Generate Network Report
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/v1/enterprise/reports/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+}
+
+body:json {
+  {
+    "report_type": "SALES_SUMMARY",
+    "period_start": "2026-02-01",
+    "period_end": "2026-02-28"
+  }
+}

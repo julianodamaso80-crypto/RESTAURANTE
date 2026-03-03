@@ -1,0 +1,19 @@
+meta {
+  name: List Network Reports
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/v1/enterprise/reports/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+}

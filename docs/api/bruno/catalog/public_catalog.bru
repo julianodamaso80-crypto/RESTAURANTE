@@ -1,0 +1,11 @@
+meta {
+  name: Public Catalog (no auth)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/api/v1/catalogs/{{catalog_id}}/public/
+  body: none
+  auth: none
+}

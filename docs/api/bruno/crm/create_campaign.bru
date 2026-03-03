@@ -1,0 +1,28 @@
+meta {
+  name: Create Campaign
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/api/v1/crm/campaigns/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Campanha Boas-vindas",
+    "segment": "{{segment_id}}",
+    "template": "{{template_id}}"
+  }
+}

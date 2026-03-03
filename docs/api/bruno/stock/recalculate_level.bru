@@ -1,0 +1,20 @@
+meta {
+  name: Recalculate Stock Level
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/api/v1/stock/items/{{stock_item_id}}/recalculate/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

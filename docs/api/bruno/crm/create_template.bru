@@ -1,0 +1,29 @@
+meta {
+  name: Create Campaign Template
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/v1/crm/templates/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Boas-vindas WhatsApp",
+    "channel": "WHATSAPP",
+    "subject": "",
+    "body": "Ola {{name}}, bem-vindo ao nosso restaurante! Use o cupom BEMVINDO10 no proximo pedido."
+  }
+}

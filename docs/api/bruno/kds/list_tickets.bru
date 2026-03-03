@@ -1,0 +1,20 @@
+meta {
+  name: List Station Tickets
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/v1/kds/stations/{{station_id}}/tickets/?include_done=false
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

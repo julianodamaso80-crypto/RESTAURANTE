@@ -1,0 +1,20 @@
+meta {
+  name: Trigger RFV Recalculation
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/v1/customers/{{customer_id}}/trigger-rfv/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

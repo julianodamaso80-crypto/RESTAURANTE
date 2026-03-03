@@ -1,0 +1,27 @@
+meta {
+  name: Create Catalog
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/catalogs/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Cardapio Principal",
+    "status": "ACTIVE"
+  }
+}

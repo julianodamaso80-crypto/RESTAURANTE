@@ -1,0 +1,29 @@
+meta {
+  name: Create Stock Movement
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/stock/movements/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "stock_item": "{{stock_item_id}}",
+    "type": "ENTRADA",
+    "quantity": "10.000",
+    "notes": "Recebimento manual"
+  }
+}

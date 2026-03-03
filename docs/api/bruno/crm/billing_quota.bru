@@ -1,0 +1,20 @@
+meta {
+  name: Billing Quota
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{base_url}}/api/v1/crm/billing/quota/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

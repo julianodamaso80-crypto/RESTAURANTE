@@ -1,0 +1,20 @@
+meta {
+  name: List Available Products
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/api/v1/catalogs/{{catalog_id}}/categories/{{category_id}}/products/available/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}

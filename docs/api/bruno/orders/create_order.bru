@@ -1,0 +1,38 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/orders/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+  Idempotency-Key: order-test-001
+}
+
+body:json {
+  {
+    "channel": "OWN",
+    "order_type": "DELIVERY",
+    "items": [
+      {
+        "name": "X-Burguer Classico",
+        "quantity": 2,
+        "unit_price_cents": 2890,
+        "total_cents": 5780
+      }
+    ],
+    "subtotal_cents": 5780,
+    "total_cents": 5780
+  }
+}

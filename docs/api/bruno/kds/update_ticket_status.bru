@@ -1,0 +1,26 @@
+meta {
+  name: Update Ticket Status
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/api/v1/kds/tickets/{{ticket_id}}/status/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "status": "IN_PROGRESS"
+  }
+}

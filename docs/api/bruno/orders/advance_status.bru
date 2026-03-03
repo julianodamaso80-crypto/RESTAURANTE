@@ -1,0 +1,26 @@
+meta {
+  name: Advance Order Status
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/api/v1/orders/{{order_id}}/status/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "status": "CONFIRMED"
+  }
+}

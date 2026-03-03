@@ -1,0 +1,28 @@
+meta {
+  name: Grant Consent
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/customers/{{customer_id}}/consent/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "channel": "WHATSAPP",
+    "action": "grant",
+    "source": "checkout"
+  }
+}

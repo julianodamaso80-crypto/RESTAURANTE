@@ -1,0 +1,26 @@
+meta {
+  name: Onboard New Store
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/enterprise/templates/{{template_id}}/onboard-store/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "store_id": "{{new_store_id}}"
+  }
+}

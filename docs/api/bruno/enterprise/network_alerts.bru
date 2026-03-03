@@ -1,0 +1,19 @@
+meta {
+  name: Network Alerts
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/api/v1/enterprise/alerts/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+}

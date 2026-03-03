@@ -1,0 +1,29 @@
+meta {
+  name: Create Product
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/v1/catalogs/{{catalog_id}}/categories/{{category_id}}/products/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "X-Burguer Classico",
+    "description": "Hamburguer artesanal com queijo, alface e tomate",
+    "price_cents": 2890,
+    "status": "ACTIVE"
+  }
+}

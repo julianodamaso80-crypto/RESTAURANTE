@@ -1,0 +1,28 @@
+meta {
+  name: Create Category
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/catalogs/{{catalog_id}}/categories/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+headers {
+  X-Tenant-ID: {{tenant_id}}
+  X-Store-ID: {{store_id}}
+}
+
+body:json {
+  {
+    "name": "Hamburgueres",
+    "sort_order": 1,
+    "status": "ACTIVE"
+  }
+}
