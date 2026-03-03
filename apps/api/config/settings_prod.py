@@ -44,3 +44,8 @@ MIDDLEWARE.insert(  # noqa: F405
     MIDDLEWARE.index("django.middleware.common.CommonMiddleware"),  # noqa: F405
     "whitenoise.middleware.WhiteNoiseMiddleware",
 )
+
+# ---------------------------------------------------------------------------
+# Celery Beat
+# ---------------------------------------------------------------------------
+INSTALLED_APPS += ["django_celery_beat"]  # noqa: F405
