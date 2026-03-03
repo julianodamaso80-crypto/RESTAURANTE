@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # Third-party
     "rest_framework",
     "django_filters",
+    "django_celery_beat",
     # Local
     "health",
     "tenants",
