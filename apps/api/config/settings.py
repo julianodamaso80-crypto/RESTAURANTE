@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "cdp",
     "crm",
     "stock",
+    "enterprise",
     # Connectors
     "connectors.ifood",
 ]

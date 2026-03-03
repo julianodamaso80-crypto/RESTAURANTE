@@ -337,4 +337,40 @@ BillOfMaterials.objects.filter(
 
 ---
 
-*Última atualização: PR 9 — próxima revisão obrigatória no PR 10.*
+## ADR-020 — Enterprise: herança por override aditivo
+
+**Status:** ✅ IMPLEMENTADO (PR 10)
+
+**Decisão:** Store herda tudo do FranchiseTemplate por padrão.
+StoreOverride é aditivo — só sobrescreve o que a store precisa mudar.
+Sem herança complexa de classes — simples dicts JSON de override.
+
+**Razão:** Franquias precisam de flexibilidade (preço regional, produto local indisponível)
+sem perder a padronização da rede. JSON de override é simples, auditável e extensível.
+
+**Consequências:**
+- Override vazio = store herda 100% do template.
+- Métodos `get_product_price()` e `is_product_active()` no StoreOverride centralizam a lógica.
+- Novos campos de override podem ser adicionados ao JSON sem migration.
+
+---
+
+## ADR-021 — Onboarding: idempotente via steps_completed
+
+**Status:** ✅ IMPLEMENTADO (PR 10)
+
+**Decisão:** FranchiseeOnboarding registra steps_completed como lista JSON.
+Cada step usa get_or_create — pode ser executado múltiplas vezes sem duplicar dados.
+Em caso de falha, onboarding pode ser retentado do ponto onde parou.
+
+**Razão:** Onboarding de store envolve múltiplos steps com risco de falha parcial.
+Idempotência garante que retry seguro não gera dados inconsistentes.
+
+**Consequências:**
+- Retry via `POST /enterprise/onboardings/{id}/retry/` é seguro.
+- Steps já concluídos são pulados no re-run.
+- unique_together (template, store) previne duplicação de onboarding.
+
+---
+
+*Última atualização: PR 10 — próxima revisão obrigatória no PR 11.*

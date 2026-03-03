@@ -20,4 +20,5 @@ urlpatterns = [
     path("api/v1/", include("cdp.urls")),
     path("api/v1/", include("crm.urls")),
     path("api/v1/", include("stock.urls")),
+    path("api/v1/", include("enterprise.urls")),
 ]

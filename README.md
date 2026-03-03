@@ -558,6 +558,64 @@ pytest stock/tests/ -v
 - Transferência entre lojas
 - Previsão de demanda
 
+## Enterprise — Franquias (PR 10)
+
+### Endpoints
+
+```
+# Template da rede
+GET    /api/v1/enterprise/templates/
+POST   /api/v1/enterprise/templates/
+POST   /api/v1/enterprise/templates/{id}/onboard-store/   → provisionar nova store
+
+# Overrides por store
+GET    /api/v1/enterprise/overrides/
+POST   /api/v1/enterprise/overrides/
+
+# Onboardings
+GET    /api/v1/enterprise/onboardings/
+POST   /api/v1/enterprise/onboardings/{id}/retry/         → retentar onboarding falho
+
+# Relatórios da rede
+GET    /api/v1/enterprise/reports/
+POST   /api/v1/enterprise/reports/generate/               → gerar relatório (async)
+
+# Alertas da rede
+GET    /api/v1/enterprise/alerts/                         → alertas abertos (?open=false)
+POST   /api/v1/enterprise/alerts/{id}/resolve/
+POST   /api/v1/enterprise/alerts/check/                   → verificar alertas manualmente
+```
+
+### Fluxo de onboarding de nova store
+
+```
+1. POST /enterprise/templates/{id}/onboard-store/ {"store_id": "..."}
+2. → FranchiseeOnboarding criado (PENDING)
+3. → run_franchisee_onboarding.delay() enfileirado
+4. Steps executados (idempotente):
+   - copy_catalog       → copia catálogo base com produtos
+   - copy_kds_stations  → cria estações KDS padrão
+   - copy_bom           → copia fichas técnicas
+   - create_billing_quota → cria quota CRM
+   - create_store_override → cria override vazio (herda tudo)
+5. Status: DONE
+```
+
+### Rodar testes do PR 10
+
+```bash
+cd apps/api
+pytest enterprise/tests/ -v
+```
+
+### O que NÃO está neste PR
+
+- Royalties / financeiro da franquia
+- Portal web do franqueado
+- Aprovação de override pela rede (workflow de aprovação)
+- Sincronização de cardápio em tempo real entre stores
+- Benchmarking automático de performance entre stores
+
 ## Admin Panel
 
 Acesse: http://localhost:8000/admin/
@@ -581,6 +639,7 @@ python manage.py createsuperuser
 | **CDP** | Perfis de clientes, RFV, consentimentos |
 | **CRM** | Segmentos, campanhas, quota de billing |
 | **Stock** | Itens, movimentos, alertas, BOM |
+| **Enterprise** | Templates, overrides, onboardings, relatórios, alertas da rede |
 | **Audit** | Eventos de auditoria (somente leitura) |
 
 ### Modelos append-only (sem edição/exclusão)
