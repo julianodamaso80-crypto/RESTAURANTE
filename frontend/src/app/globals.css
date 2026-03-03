@@ -6,8 +6,11 @@
   --background: #0A0A0A;
   --surface: #111111;
   --surface-2: #1A1A1A;
+  --surface-3: #222222;
   --border: #2A2A2A;
+  --border-light: #3A3A3A;
   --accent: #F97316;
+  --accent-gold: #D4A853;
   --foreground: #E5E5E5;
   --muted: #737373;
 }
@@ -31,4 +34,54 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #1A1A1A inset;
   -webkit-text-fill-color: #E5E5E5;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(17, 17, 17, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Ambient glow effect */
+.ambient-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Sophisticated input focus ring */
+.input-luxury {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-luxury:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1), 0 0 20px rgba(249, 115, 22, 0.05);
+}
+
+/* Button shimmer */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-shimmer:hover::after {
+  left: 100%;
 }
