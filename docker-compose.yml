@@ -30,5 +30,24 @@ services:
       - postgres
     restart: unless-stopped
 
+  beat:
+    build: ./apps/api
+    command: celery -A config beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./apps/api:/app
+    working_dir: /app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+
+  web:
+    build: ./apps/web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
 volumes:
   pgdata:

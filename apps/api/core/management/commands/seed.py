@@ -24,6 +24,9 @@ class Command(BaseCommand):
             self._clear_data()
 
         with transaction.atomic():
+            self.stdout.write("Criando superuser admin...")
+            self._create_admin()
+
             self.stdout.write("Criando Burguer Palace...")
             tenant_bp, stores_bp = self._create_burguer_palace()
 
@@ -58,9 +61,29 @@ class Command(BaseCommand):
         Order.objects.filter(tenant__in=seed_tenants).delete()
         # Now safe to cascade-delete everything else
         seed_tenants.delete()
-        # Delete seed-created users (preserves superusers and non-seed users)
-        seed_emails = ["owner@burguerpala.ce", "manager.paulista@burguerpala.ce", "operator1@burguerpala.ce"]
+        # Delete seed-created users (preserves non-seed users)
+        seed_emails = [
+            "admin@mesamestre.com",
+            "owner@burguerpala.ce",
+            "manager.paulista@burguerpala.ce",
+            "operator1@burguerpala.ce",
+        ]
         User.objects.filter(email__in=seed_emails).delete()
+
+    def _create_admin(self):
+        """Cria superuser admin com acesso ao /admin/ e membership em todos os tenants."""
+        from tenants.models import User
+
+        admin, created = User.objects.get_or_create(
+            email="admin@mesamestre.com",
+            defaults={"name": "Admin MesaMestre", "is_staff": True, "is_superuser": True},
+        )
+        if created:
+            admin.set_password("admin123")
+            admin.save(update_fields=["password"])
+            self.stdout.write("  Superuser admin@mesamestre.com criado")
+        else:
+            self.stdout.write("  Superuser admin@mesamestre.com ja existe")
 
     def _create_burguer_palace(self):
         from tenants.models import Company, Membership, Store, Tenant, User
@@ -96,6 +119,9 @@ class Command(BaseCommand):
         )
         Membership.objects.create(user=operator, tenant=tenant, company=company, store=stores[0])
 
+        # Criar RBAC: permissions, roles e bindings
+        self._create_rbac(tenant, company, stores[0], owner, manager, operator)
+
         # Criar catalogo
         self._create_catalog_burguer(tenant, company, stores[0])
 
@@ -106,6 +132,69 @@ class Command(BaseCommand):
         self._create_kds_burguer(stores[0])
 
         return tenant, stores
+
+    def _create_rbac(self, tenant, company, store, owner, manager, operator):
+        """Cria permissions, roles e role bindings para os usuarios demo."""
+        from rbac.models import Permission, Role, RoleBinding
+
+        # Todas as permissions usadas nos viewsets
+        all_codenames = [
+            "tenants:read", "tenants:write",
+            "companies:read", "companies:write",
+            "stores:read", "stores:write",
+            "users:read", "users:write",
+            "memberships:read", "memberships:write",
+            "permissions:read",
+            "roles:read", "roles:write",
+            "rolebindings:read", "rolebindings:write",
+            "audit:read",
+            "orders:read", "orders:write",
+            "kds:read", "kds:write",
+            "catalog:read", "catalog:write",
+            "cdp:read", "cdp:write",
+            "crm:read", "crm:write",
+            "stock:read", "stock:write",
+            "enterprise:read", "enterprise:write",
+        ]
+        perms = {}
+        for codename in all_codenames:
+            perm, _ = Permission.objects.get_or_create(codename=codename)
+            perms[codename] = perm
+
+        # Owner role: acesso total no tenant
+        owner_role = Role.objects.create(name="Owner", tenant=tenant)
+        owner_role.permissions.set(perms.values())
+        RoleBinding.objects.create(user=owner, role=owner_role, tenant=tenant)
+
+        # Manager role: acesso operacional (sem billing/tenant config)
+        manager_codenames = [
+            "companies:read", "stores:read",
+            "users:read", "memberships:read",
+            "orders:read", "orders:write",
+            "kds:read", "kds:write",
+            "catalog:read", "catalog:write",
+            "cdp:read", "cdp:write",
+            "crm:read", "crm:write",
+            "stock:read", "stock:write",
+            "audit:read",
+        ]
+        manager_role = Role.objects.create(name="Manager", tenant=tenant)
+        manager_role.permissions.set([perms[c] for c in manager_codenames])
+        RoleBinding.objects.create(user=manager, role=manager_role, tenant=tenant, company=company, store=store)
+
+        # Operator role: pedidos, KDS, estoque (somente leitura no resto)
+        operator_codenames = [
+            "orders:read", "orders:write",
+            "kds:read", "kds:write",
+            "stock:read",
+            "catalog:read",
+            "cdp:read",
+        ]
+        operator_role = Role.objects.create(name="Operator", tenant=tenant)
+        operator_role.permissions.set([perms[c] for c in operator_codenames])
+        RoleBinding.objects.create(user=operator, role=operator_role, tenant=tenant, company=company, store=store)
+
+        self.stdout.write(f"  RBAC: {len(all_codenames)} permissions, 3 roles, 3 bindings")
 
     def _create_catalog_burguer(self, tenant, company, store):
         from catalog.models import (
@@ -496,6 +585,13 @@ class Command(BaseCommand):
             self.stdout.write(f"  {tenant.name}: {stores} lojas, {customers} clientes, {orders} pedidos")
 
         self.stdout.write("\nCredenciais de acesso:")
-        self.stdout.write("  owner@burguerpala.ce / demo123")
-        self.stdout.write("  manager.paulista@burguerpala.ce / demo123")
-        self.stdout.write("  http://localhost:8000/admin/ (criar superuser separado)")
+        self.stdout.write("  ADMIN (superuser - acesso total + /admin/):")
+        self.stdout.write("    admin@mesamestre.com / admin123")
+        self.stdout.write("")
+        self.stdout.write("  USUARIOS DEMO (Burguer Palace):")
+        self.stdout.write("    owner@burguerpala.ce / demo123 (dono do tenant)")
+        self.stdout.write("    manager.paulista@burguerpala.ce / demo123 (gerente loja Paulista)")
+        self.stdout.write("    operator1@burguerpala.ce / demo123 (operador loja Paulista)")
+        self.stdout.write("")
+        self.stdout.write("  Django Admin: http://localhost:8000/admin/")
+        self.stdout.write("  API: http://localhost:8000/api/v1/")

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "enterprise",
     # Connectors
     "connectors.ifood",
+    "connectors.ninetynine",
 ]
 
 # ---------------------------------------------------------------------------
@@ -124,6 +125,17 @@ CELERY_TASK_TIME_LIMIT = 300
 CELERY_TASK_SOFT_TIME_LIMIT = 240
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_ACKS_LATE = True
+
+# ---------------------------------------------------------------------------
+# Celery Beat — Periodic Tasks
+# ---------------------------------------------------------------------------
+CELERY_BEAT_SCHEDULE = {
+    "poll-ifood-orders": {
+        "task": "connectors.ifood.polling.poll_ifood_orders",
+        "schedule": 30.0,
+        "options": {"expires": 25.0},
+    },
+}
 
 # ---------------------------------------------------------------------------
 # Auth
@@ -232,5 +244,11 @@ structlog.configure(
 # ---------------------------------------------------------------------------
 IFOOD_WEBHOOK_SECRET = os.environ.get("IFOOD_WEBHOOK_SECRET", "")
 IFOOD_API_BASE_URL = os.environ.get("IFOOD_API_BASE_URL", "https://merchant-api.ifood.com.br")
+
+# ---------------------------------------------------------------------------
+# 99Food Connector
+# ---------------------------------------------------------------------------
+NINETYNINE_WEBHOOK_SECRET = os.environ.get("NINETYNINE_WEBHOOK_SECRET", "")
+NINETYNINE_API_BASE_URL = os.environ.get("NINETYNINE_API_BASE_URL", "https://api.99app.com/v1")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

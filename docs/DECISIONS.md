@@ -174,14 +174,14 @@ PENDING → CONFIRMED → IN_PREPARATION → READY → DISPATCHED → DELIVERED
 
 ## ADR-010 — Integrações de marketplace (iFood, 99Food, Open Delivery)
 
-**Status:** ⚠️ PARCIAL — iFood implementado (PR 4), 99Food e Open Delivery: TODO
+**Status:** ✅ IMPLEMENTADO (PR 4 + PR 11) — iFood e 99Food via Open Delivery Protocol.
 
 **Decisão:**
 - Cada marketplace é um adapter isolado que implementa interface `MarketplaceAdapter`.
 - O core do ERP nunca importa diretamente código de marketplace específico.
 - iFood: autenticação centralizada + webhook com validação `X-IFood-Signature` obrigatória.
 - 99Food: adapter isolado, falha do adapter não afeta core.
-- Open Delivery: adapter padronizado como acelerador de novas integrações.
+- Open Delivery: adapter padronizado — novos marketplaces levam ~2h para integrar.
 
 ---
 
@@ -373,4 +373,26 @@ Idempotência garante que retry seguro não gera dados inconsistentes.
 
 ---
 
-*Última atualização: PR 10 — próxima revisão obrigatória no PR 11.*
+## ADR-022 — iFood Polling: ingestão alternativa via Celery Beat
+
+**Status:** ✅ IMPLEMENTADO (PR 12)
+
+**Decisão:**
+Polling ativo como alternativa ao webhook. Celery Beat executa `poll_ifood_orders`
+a cada 30 segundos. Cada `IFoodStoreCredential` ativa é polled independentemente.
+Eventos são persistidos como `RawEvent` (mesmo modelo do webhook) e processados
+via `process_ifood_event` (mesma task do webhook).
+
+**Razão:** Webhook exige endpoint público com HTTPS, que nem todo ambiente tem.
+Polling funciona em qualquer ambiente com acesso à internet outbound.
+
+**Consequências:**
+- Webhook e polling podem coexistir (idempotência por `event_id` previne duplicatas).
+- Polling adiciona ~30s de latência vs webhook (best case).
+- `headers.ingestion = "polling"` distingue a origem no RawEvent.
+- Beat schedule com `expires=25s` previne acúmulo de tasks se worker estiver lento.
+- Acknowledge sempre inclui duplicatas para limpar a fila do iFood.
+
+---
+
+*Última atualização: PR 12 — próxima revisão obrigatória no PR 13.*

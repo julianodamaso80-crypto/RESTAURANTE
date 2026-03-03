@@ -285,13 +285,93 @@ cd apps/api
 pytest connectors/ifood/tests/ -v
 ```
 
-### O que NÃO está neste PR
+### O que NÃO está neste PR (PR 4)
 
 - OAuth / renovação de token iFood (próximo PR ou separado)
-- 99Food connector
-- Open Delivery adapter
-- KDS, catálogo, CRM, estoque
 - Atualização de status de pedido via webhook iFood (só criação)
+
+## iFood Polling (PR 12)
+
+Alternativa ao webhook — polling ativo a cada 30 segundos via Celery Beat.
+Funciona em qualquer ambiente sem precisar de endpoint público.
+
+### Como funciona
+
+```
+1. Celery Beat dispara poll_ifood_orders a cada 30s
+2. Para cada IFoodStoreCredential ativa com token:
+   GET /order/v1.0/events:polling → eventos pendentes
+3. Cria RawEvent + enfileira process_ifood_event (mesmo pipeline do webhook)
+4. POST /order/v1.0/events/acknowledgment → remove da fila do iFood
+```
+
+### Coexistência com webhook
+
+Webhook e polling podem rodar simultaneamente — idempotência por `event_id` previne duplicatas.
+RawEvents de polling têm `headers.ingestion = "polling"` para distinguir.
+
+### Subir Celery Beat
+
+```bash
+docker compose up beat
+```
+
+### Rodar testes do PR 12
+
+```bash
+cd apps/api
+pytest connectors/ifood/tests/test_polling.py -v
+```
+
+## 99Food Connector (PR 11)
+
+### Webhook endpoint
+
+```
+POST /api/v1/webhooks/99food/
+Headers obrigatórios:
+  X-Ninetynine-Signature: <HMAC-SHA256 do payload>
+Response: 202 Accepted (sempre < 2s)
+```
+
+### Pipeline de processamento
+
+```
+1. Validar assinatura X-Ninetynine-Signature → 401 se inválida
+2. Persistir RawEvent (source='99food') → imediato
+3. Responder 202 → imediato
+4. [Celery] Checar idempotência → skip se duplicado
+5. [Celery] Buscar detalhes na API 99Food (retry 404 com backoff)
+6. [Celery] Criar Order interno
+```
+
+### Health check
+
+```
+GET /api/v1/health/99food/
+```
+
+### Variáveis de ambiente
+
+| Variável | Descrição |
+|---|---|
+| `NINETYNINE_WEBHOOK_SECRET` | Secret para validar X-Ninetynine-Signature |
+| `NINETYNINE_API_BASE_URL` | Base URL da API 99Food |
+
+### Rodar testes do PR 11
+
+```bash
+cd apps/api
+pytest connectors/ninetynine/tests/ -v
+```
+
+### O que NÃO está neste PR
+
+- OAuth / renovação de token 99Food (próximo PR)
+- Atualização de status de pedido via webhook (só criação)
+- Open Delivery: outros marketplaces (Rappi, Uber Eats) — mesmo padrão, ~2h cada
+- Reconciliação financeira
+- Cancelamento automático via API
 
 ## KDS — Kitchen Display System (PR 5)
 
@@ -634,6 +714,7 @@ python manage.py createsuperuser
 | **Tenants** | Ver tenants, companies, stores e memberships |
 | **Orders** | Ver pedidos, cancelar em massa, ver itens inline |
 | **iFood** | Monitor de eventos, reprocessar falhas |
+| **99Food** | Credenciais por store |
 | **KDS** | Ver estações e tickets ativos |
 | **Catalog** | Gerenciar cardápio completo com modificadores |
 | **CDP** | Perfis de clientes, RFV, consentimentos |
@@ -644,7 +725,7 @@ python manage.py createsuperuser
 
 ### Modelos append-only (sem edição/exclusão)
 
-- `RawEvent` — eventos iFood
+- `RawEvent` — eventos iFood / 99Food
 - `StockMovement` — movimentos de estoque
 - `ConsentRecord` — consentimentos LGPD
 - `CustomerEvent` — eventos do cliente
