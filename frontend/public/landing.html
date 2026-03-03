@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ERP completo para restaurantes e franquias. Integração oficial iFood e 99Food, KDS para cozinha, controle de estoque e CRM. Teste grátis por 14 dias. Sem contrato.">
+  <meta name="keywords" content="sistema para restaurante, software restaurante, integração ifood, sistema pdv restaurante, gestão delivery, kds restaurante, erp restaurante, software franquia restaurante">
+  <meta name="theme-color" content="#0D0D0F">
+  <title>MesaMestre — Sistema para Restaurantes com iFood e 99Food Integrados</title>
+
+  <!-- Open Graph para compartilhamento -->
+  <meta property="og:title" content="MesaMestre — Sistema para Restaurantes">
+  <meta property="og:description" content="Centralize iFood, 99Food, KDS e estoque numa plataforma só.">
+  <meta property="og:image" content="https://mesamestre.com.br/assets/img/og-image.jpg">
+  <meta property="og:url" content="https://mesamestre.com.br">
+  <meta property="og:type" content="website">
+
+  <!-- Schema.org estruturado para Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MesaMestre",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "ERP para restaurantes com integração iFood e 99Food",
+    "offers": {
+      "@type": "Offer",
+      "price": "197.00",
+      "priceCurrency": "BRL"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "312"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 1. NAVBAR                                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <header class="navbar" id="navbar" role="banner">
+    <div class="container navbar__inner">
+      <a href="#" class="navbar__logo" aria-label="MesaMestre — Página inicial">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="2" y="18" width="24" height="3" rx="1.5" fill="#C8973A"/>
+          <rect x="5" y="22" width="3" height="5" rx="1" fill="#C8973A"/>
+          <rect x="20" y="22" width="3" height="5" rx="1" fill="#C8973A"/>
+          <path d="M6 18V12a8 8 0 0 1 16 0v6" stroke="#C8973A" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <span>Mesa<strong>Mestre</strong></span>
+      </a>
+
+      <nav class="navbar__links" aria-label="Navegação principal">
+        <a href="#funcionalidades">Funcionalidades</a>
+        <a href="#integracoes">Integrações</a>
+        <a href="#franquias">Franquias</a>
+        <a href="#precos">Preços</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a href="#" class="btn btn--ghost">Entrar</a>
+        <a href="#precos" class="btn btn--accent btn--sm">Começar grátis</a>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+      <nav>
+        <a href="#funcionalidades">Funcionalidades</a>
+        <a href="#integracoes">Integrações</a>
+        <a href="#franquias">Franquias</a>
+        <a href="#precos">Preços</a>
+      </nav>
+      <div class="navbar__mobile-actions">
+        <a href="#" class="btn btn--ghost">Entrar</a>
+        <a href="#precos" class="btn btn--accent">Começar grátis</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 2. HERO                                            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__noise"></div>
+    <div class="hero__grid"></div>
+    <div class="hero__glow"></div>
+
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <span class="pill reveal">
+          <span class="pill__dot"></span>
+          iFood + 99Food integrados nativamente
+        </span>
+
+        <h1 class="reveal">
+          Sistema para Restaurante com iFood e 99Food <em>Integrados</em>
+        </h1>
+
+        <p class="hero__sub reveal">
+          O ERP que centraliza pedidos do iFood e 99Food, organiza
+          sua cozinha com KDS e controla estoque. Sem tablet. Sem planilha.
+          Sem dor de cabeça.
+        </p>
+
+        <div class="hero__ctas reveal">
+          <a href="#precos" class="btn btn--accent btn--lg">Quero testar 14 dias grátis</a>
+          <a href="#integracoes" class="btn btn--outline btn--lg">Ver demonstração
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="hero__proof reveal">
+          <div class="hero__avatars">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="" width="36" height="36" loading="eager">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="" width="36" height="36" loading="eager">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face" alt="" width="36" height="36" loading="eager">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="" width="36" height="36" loading="eager">
+          </div>
+          <p>Usado por <strong>+500 restaurantes</strong> em todo o Brasil</p>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal">
+        <div class="hero__mockup glow-gold">
+          <img
+            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80"
+            alt="Dashboard ERP restaurante MesaMestre"
+            width="600" height="400"
+            loading="eager"
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 3. LOGOS — prova social                            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="logos" aria-label="Marketplaces integrados">
+    <p class="logos__label">Integrado com os maiores marketplaces do Brasil</p>
+    <div class="logos__track">
+      <div class="logos__slide">
+        <span class="logos__item logos__item--ifood">
+          <svg width="90" height="32" viewBox="0 0 90 32" aria-label="iFood">
+            <text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#EA1D2C">iFood</text>
+          </svg>
+        </span>
+        <span class="logos__item logos__item--99">
+          <svg width="110" height="32" viewBox="0 0 110 32" aria-label="99Food">
+            <text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#FFDD00">99Food</text>
+          </svg>
+        </span>
+        <span class="logos__item logos__item--rappi">
+          <svg width="80" height="32" viewBox="0 0 80 32" aria-label="Rappi">
+            <text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#FF441F">Rappi</text>
+          </svg>
+        </span>
+        <span class="logos__item logos__item--more">e mais em breve</span>
+        <!-- duplicate for seamless loop -->
+        <span class="logos__item logos__item--ifood" aria-hidden="true">
+          <svg width="90" height="32" viewBox="0 0 90 32"><text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#EA1D2C">iFood</text></svg>
+        </span>
+        <span class="logos__item logos__item--99" aria-hidden="true">
+          <svg width="110" height="32" viewBox="0 0 110 32"><text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#FFDD00">99Food</text></svg>
+        </span>
+        <span class="logos__item logos__item--rappi" aria-hidden="true">
+          <svg width="80" height="32" viewBox="0 0 80 32"><text x="0" y="24" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#FF441F">Rappi</text></svg>
+        </span>
+        <span class="logos__item logos__item--more" aria-hidden="true">e mais em breve</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 4. PROBLEMA — seção narrativa                      -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="problem" id="problema">
+    <div class="container problem__inner">
+      <div class="problem__text">
+        <h2 class="reveal">Você ainda gerencia 3&nbsp;tablets, 2&nbsp;planilhas e uma anotação no papel?</h2>
+        <ul class="problem__list">
+          <li class="reveal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8593A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Pedidos chegando em tablets diferentes ao mesmo tempo
+          </li>
+          <li class="reveal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8593A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Cozinha sem saber a ordem certa de preparo
+          </li>
+          <li class="reveal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8593A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Sem saber qual canal de venda dá mais lucro
+          </li>
+          <li class="reveal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8593A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Estoque acabando sem nenhum aviso prévio
+          </li>
+          <li class="reveal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8593A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            Nenhuma visão consolidada das franquias
+          </li>
+        </ul>
+        <p class="problem__transition reveal"><strong>Existe uma forma melhor.</strong></p>
+      </div>
+
+      <div class="problem__visual reveal">
+        <img
+          src="https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=800&q=80"
+          alt="Gestão de pedidos iFood e 99Food"
+          width="560" height="420"
+          loading="lazy"
+        >
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 5. SOLUÇÃO — cards de funcionalidades              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="features" id="funcionalidades">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Funcionalidades</span>
+        <h2>Tudo que seu restaurante precisa, numa tela só</h2>
+        <p>Seis módulos pensados para quem não tem tempo de aprender sistema complicado.</p>
+      </div>
+
+      <div class="features__grid">
+        <article class="feature-card reveal" data-delay="0">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </div>
+          <h3>Gestão de Pedidos Delivery</h3>
+          <p>iFood, 99Food e balcão chegam na mesma fila. Um painel, zero confusão, zero redigitação.</p>
+        </article>
+
+        <article class="feature-card reveal" data-delay="1">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          </div>
+          <h3>KDS — Kitchen Display System</h3>
+          <p>Fila de preparo em tempo real na tela da cozinha. Cada prato na ordem certa, com timer e alerta de atraso.</p>
+        </article>
+
+        <article class="feature-card reveal" data-delay="2">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          </div>
+          <h3>Controle de Estoque para Restaurante</h3>
+          <p>Baixa automática a cada venda, alertas de ruptura antes de faltar, ficha técnica por produto.</p>
+        </article>
+
+        <article class="feature-card reveal" data-delay="3">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>CRM para Fidelização de Clientes</h3>
+          <p>Conheça seus clientes, segmente por frequência e ticket, lance campanhas que trazem de volta.</p>
+        </article>
+
+        <article class="feature-card reveal" data-delay="4">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <h3>Relatórios de Vendas por Canal</h3>
+          <p>Saiba qual canal vende mais, qual turno é mais lucrativo, qual prato tem melhor margem.</p>
+        </article>
+
+        <article class="feature-card reveal" data-delay="5">
+          <div class="feature-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+          </div>
+          <h3>Software para Rede de Franquias</h3>
+          <p>Visão da rede inteira num dashboard. Compare unidades, padronize cardápios, controle de longe.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 6. INTEGRAÇÃO IFOOD/99FOOD                         -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="integration" id="integracoes">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Integrações</span>
+        <h2>Seus pedidos chegam sozinhos. Sem digitar nada.</h2>
+        <p>Conexão direta com iFood e 99Food via Open Delivery Protocol. Cada pedido entra automaticamente na fila.</p>
+      </div>
+
+      <div class="integration__flow reveal">
+        <div class="integration__step">
+          <div class="integration__number">1</div>
+          <div class="integration__icon integration__icon--ifood">
+            <svg width="28" height="28" viewBox="0 0 28 28" aria-label="iFood" fill="none"><text x="0" y="22" font-family="DM Sans, sans-serif" font-weight="700" font-size="16" fill="#EA1D2C">iFood</text></svg>
+          </div>
+          <p>Cliente faz o pedido no iFood ou 99Food</p>
+        </div>
+
+        <div class="integration__arrow" aria-hidden="true">
+          <svg width="48" height="24" viewBox="0 0 48 24">
+            <line x1="0" y1="12" x2="40" y2="12" stroke="#C8973A" stroke-width="2" stroke-dasharray="6,4" class="arrow-line"/>
+            <polygon points="40,6 48,12 40,18" fill="#C8973A"/>
+          </svg>
+        </div>
+
+        <div class="integration__step">
+          <div class="integration__number">2</div>
+          <div class="integration__icon integration__icon--mesa">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+              <rect x="2" y="18" width="24" height="3" rx="1.5" fill="#C8973A"/>
+              <path d="M6 18V12a8 8 0 0 1 16 0v6" stroke="#C8973A" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p>MesaMestre recebe, valida e organiza na fila</p>
+        </div>
+
+        <div class="integration__arrow" aria-hidden="true">
+          <svg width="48" height="24" viewBox="0 0 48 24">
+            <line x1="0" y1="12" x2="40" y2="12" stroke="#C8973A" stroke-width="2" stroke-dasharray="6,4" class="arrow-line"/>
+            <polygon points="40,6 48,12 40,18" fill="#C8973A"/>
+          </svg>
+        </div>
+
+        <div class="integration__step">
+          <div class="integration__number">3</div>
+          <div class="integration__icon integration__icon--kds">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C8973A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </div>
+          <p>Cozinha vê o pedido no KDS, já na ordem de preparo</p>
+        </div>
+      </div>
+
+      <div class="integration__highlights reveal">
+        <ul class="integration__badges">
+          <li>Integração oficial via Open Delivery Protocol</li>
+          <li>Pedidos confirmados automaticamente em menos de 2 segundos</li>
+          <li>Compatível com PDV homologado iFood</li>
+          <li>Funciona com iFood, 99Food e Open Delivery</li>
+        </ul>
+      </div>
+
+      <div class="integration__cta reveal">
+        <a href="#funcionalidades" class="btn btn--outline">
+          Ver como funciona
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 7. KDS — feature spotlight                         -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="kds">
+    <div class="container kds__inner">
+      <div class="kds__visual reveal">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
+          alt="KDS cozinha restaurante delivery"
+          width="560" height="420"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="kds__text">
+        <span class="pill pill--gold reveal">Novo</span>
+        <h2 class="reveal">A cozinha sempre sabe o que preparar. Na ordem certa.</h2>
+        <ul class="kds__benefits">
+          <li class="reveal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Tempo médio de preparo reduzido em <strong>32%</strong>
+          </li>
+          <li class="reveal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Fila visual com cores: verde, amarelo e vermelho por tempo
+          </li>
+          <li class="reveal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Alerta sonoro quando pedido está atrasado
+          </li>
+          <li class="reveal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Funciona em tablet, monitor ou TV na cozinha
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 8. FRANQUIAS — seção enterprise                    -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="franchise" id="franquias">
+    <div class="container franchise__inner">
+      <div class="franchise__text">
+        <span class="section-tag reveal">Enterprise</span>
+        <h2 class="reveal">Para quem tem mais de uma unidade</h2>
+        <p class="reveal">
+          Gerencie 5 ou 50 lojas com a mesma clareza de uma. Padronize cardápios, compare desempenho entre unidades e identifique problemas antes que virem prejuízo.
+        </p>
+        <a href="#precos" class="btn btn--outline btn--lg reveal">
+          Falar com especialista em franquias
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="franchise__metrics">
+        <div class="metric-card reveal" data-delay="0">
+          <span class="metric-card__value" data-count="47">0</span><span class="metric-card__suffix">%</span>
+          <p>menos erros de pedido</p>
+        </div>
+        <div class="metric-card reveal" data-delay="1">
+          <span class="metric-card__value" data-count="12">0</span><span class="metric-card__suffix">min</span>
+          <p>tempo médio de preparo</p>
+        </div>
+        <div class="metric-card reveal" data-delay="2">
+          <span class="metric-card__value" data-count="500">0</span><span class="metric-card__suffix">+</span>
+          <p>restaurantes usando</p>
+        </div>
+        <div class="metric-card reveal" data-delay="3">
+          <span class="metric-card__value" data-count="98">0</span><span class="metric-card__suffix">%</span>
+          <p>uptime da plataforma</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 9. DEPOIMENTOS — prova social                      -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Depoimentos</span>
+        <h2>O que os donos falam depois de 30 dias</h2>
+      </div>
+
+      <div class="testimonials__grid">
+        <article class="testimonial-card reveal" data-delay="0">
+          <div class="testimonial-card__stars" aria-label="5 estrelas">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <blockquote>
+            "Antes eu perdia pelo menos 5 pedidos por semana por causa da bagunça de tablets. Com o MesaMestre, zerou. E a cozinha ficou muito mais rápida."
+          </blockquote>
+          <div class="testimonial-card__author">
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+              alt=""
+              width="44" height="44"
+              loading="lazy"
+            >
+            <div>
+              <strong>Ricardo Almeida</strong>
+              <span>Dono — Burger Station, SP</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card reveal" data-delay="1">
+          <div class="testimonial-card__stars" aria-label="5 estrelas">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <blockquote>
+            "Gerencio 12 unidades e finalmente consigo comparar desempenho de cada loja em tempo real. A visão de rede mudou tudo na nossa operação."
+          </blockquote>
+          <div class="testimonial-card__author">
+            <img
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face"
+              alt=""
+              width="44" height="44"
+              loading="lazy"
+            >
+            <div>
+              <strong>Camila Santos</strong>
+              <span>Diretora — Rede Sabor & Arte, RJ</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card reveal" data-delay="2">
+          <div class="testimonial-card__stars" aria-label="5 estrelas">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#C8973A" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <blockquote>
+            "O controle de estoque é assustadoramente bom. Ele avisou que a mussarela ia acabar na quinta antes de eu perceber. Economizei uma grana."
+          </blockquote>
+          <div class="testimonial-card__author">
+            <img
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face"
+              alt=""
+              width="44" height="44"
+              loading="lazy"
+            >
+            <div>
+              <strong>Marcos Ferreira</strong>
+              <span>Dono — Pizzaria do Marcos, BH</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 10. PREÇOS — 3 planos                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="pricing" id="precos">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Preços</span>
+        <h2>Simples. Sem surpresa no boleto.</h2>
+        <p>Todos os planos incluem suporte em português e setup assistido.</p>
+      </div>
+
+      <div class="pricing__toggle reveal">
+        <span class="pricing__label pricing__label--active" id="labelMonthly">Mensal</span>
+        <button class="pricing__switch" id="pricingToggle" role="switch" aria-checked="false" aria-label="Alternar entre mensal e anual">
+          <span class="pricing__switch-thumb"></span>
+        </button>
+        <span class="pricing__label" id="labelAnnual">Anual <span class="pricing__badge">-20%</span></span>
+      </div>
+
+      <div class="pricing__grid">
+        <article class="pricing-card reveal" data-delay="0">
+          <div class="pricing-card__header">
+            <h3>Starter</h3>
+            <p>Para restaurantes com até 100 pedidos/dia</p>
+          </div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__currency">R$</span>
+            <span class="pricing-card__amount" data-monthly="197" data-annual="157">197</span>
+            <span class="pricing-card__period">/mês</span>
+          </div>
+          <ul class="pricing-card__features">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Pedidos centralizados (1 loja)
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Integração iFood + 99Food
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              KDS para cozinha
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Relatórios básicos
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Suporte por email
+            </li>
+          </ul>
+          <a href="#" class="btn btn--outline btn--full">Começar com Starter</a>
+        </article>
+
+        <article class="pricing-card pricing-card--featured reveal" data-delay="1">
+          <span class="pricing-card__popular">Mais popular</span>
+          <div class="pricing-card__header">
+            <h3>Pro</h3>
+            <p>Para operações com alto volume e múltiplos canais</p>
+          </div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__currency">R$</span>
+            <span class="pricing-card__amount" data-monthly="397" data-annual="317">397</span>
+            <span class="pricing-card__period">/mês</span>
+          </div>
+          <ul class="pricing-card__features">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Tudo do Starter
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Até 3 lojas
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Estoque inteligente + alertas
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              CRM + campanhas de fidelização
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Relatórios avançados por canal
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Suporte prioritário WhatsApp
+            </li>
+          </ul>
+          <a href="#" class="btn btn--accent btn--full">Quero testar o Pro grátis</a>
+        </article>
+
+        <article class="pricing-card reveal" data-delay="2">
+          <div class="pricing-card__header">
+            <h3>Franquias</h3>
+            <p>Para redes com 5+ unidades e gestão centralizada</p>
+          </div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__currency">R$</span>
+            <span class="pricing-card__amount pricing-card__amount--custom">Sob consulta</span>
+          </div>
+          <ul class="pricing-card__features">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Tudo do Pro
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Lojas ilimitadas
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Dashboard de rede + comparativo
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Templates de cardápio para rede
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Onboarding assistido por unidade
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3AB87A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Gerente de conta dedicado
+            </li>
+          </ul>
+          <a href="#" class="btn btn--outline btn--full">Falar com especialista</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 11. FAQ — accordion                                -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Dúvidas</span>
+        <h2>Perguntas frequentes</h2>
+      </div>
+
+      <div class="faq__list">
+        <details class="faq__item reveal">
+          <summary>
+            Preciso ter CNPJ para assinar?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Não. Você pode testar os 14 dias grátis sem CNPJ. Para assinar um plano pago, aceitamos CPF ou CNPJ. O importante é que você tenha um restaurante funcionando.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Como funciona a integração com iFood?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Usamos a API oficial do iFood via Open Delivery Protocol. Você autoriza a conexão no painel do iFood e, a partir daí, todos os pedidos chegam automaticamente no MesaMestre. Sem digitar nada, sem copiar e colar. Leva menos de 10 minutos para configurar.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Funciona no celular?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Sim. O MesaMestre é 100% responsivo e funciona no navegador de qualquer dispositivo: celular, tablet, notebook ou TV. Para o KDS da cozinha, recomendamos um tablet ou monitor dedicado para melhor experiência.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Tem contrato de fidelidade?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Não. Todos os planos são sem fidelidade. Você pode cancelar a qualquer momento, direto pelo painel, sem precisar ligar para ninguém. No plano anual, o desconto de 20% é aplicado e o pagamento é mensal.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            E se eu tiver mais de uma loja?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>O plano Pro suporta até 3 lojas. Para redes maiores, o plano Franquias oferece lojas ilimitadas, dashboard comparativo da rede inteira e gerente de conta dedicado. Fale com nosso time para um plano personalizado.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Tem suporte em português?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Claro. Somos uma empresa brasileira e todo o suporte é em português. No plano Starter, por email. No Pro, via WhatsApp com resposta em até 2 horas. No Franquias, você tem um gerente de conta dedicado com linha direta.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            O MesaMestre é homologado pelo iFood?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Sim. O MesaMestre é integrado via Open Delivery Protocol, o padrão oficial do iFood para parceiros de tecnologia.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Funciona para dark kitchen e delivery próprio?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>Sim. Além do iFood e 99Food, você pode receber pedidos do seu próprio canal de delivery.</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>
+            Qual a diferença do MesaMestre para outros sistemas de restaurante?
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq__chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__answer">
+            <p>A integração com iFood e 99Food é nativa — pedidos chegam automaticamente sem digitar nada. Outros sistemas exigem integração manual ou cobram à parte.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 12. CTA FINAL — urgência                           -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="cta-final">
+    <div class="cta-final__glow"></div>
+    <div class="container cta-final__inner">
+      <h2 class="reveal">Seu concorrente já está usando.</h2>
+      <p class="reveal">Comece grátis. Sem cartão de crédito. Setup em menos de 5 minutos.</p>
+      <a href="#precos" class="btn btn--accent btn--xl reveal">Quero testar 14 dias grátis</a>
+      <span class="cta-final__micro reveal">Cancele quando quiser. Sem burocracia.</span>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- 13. FOOTER                                         -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#" class="navbar__logo" aria-label="MesaMestre">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect x="2" y="18" width="24" height="3" rx="1.5" fill="#C8973A"/>
+            <rect x="5" y="22" width="3" height="5" rx="1" fill="#C8973A"/>
+            <rect x="20" y="22" width="3" height="5" rx="1" fill="#C8973A"/>
+            <path d="M6 18V12a8 8 0 0 1 16 0v6" stroke="#C8973A" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span>Mesa<strong>Mestre</strong></span>
+        </a>
+        <p>MesaMestre é um software de gestão para restaurantes, lanchonetes e redes de franquias. Sistema PDV homologado com integração oficial iFood e 99Food via Open Delivery Protocol. Desenvolvido para o mercado brasileiro de food service.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Produto</h4>
+        <a href="#funcionalidades">Funcionalidades</a>
+        <a href="#integracoes">Integrações</a>
+        <a href="#precos">Preços</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Empresa</h4>
+        <a href="#">Sobre nós</a>
+        <a href="#">Blog</a>
+        <a href="#">Carreiras</a>
+        <a href="#">Contato</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <a href="#">Termos de uso</a>
+        <a href="#">Política de privacidade</a>
+        <a href="#">LGPD</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Redes</h4>
+        <div class="footer__social">
+          <a href="#" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2026 MesaMestre. Todos os direitos reservados.</p>
+        <span class="footer__badge">Feito para restaurantes brasileiros</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
