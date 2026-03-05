@@ -12,6 +12,7 @@ import {
   Package,
   Users,
   Megaphone,
+  Plug,
   LogOut,
 } from "lucide-react";
 
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { href: "/stock", icon: Package, label: "Estoque" },
   { href: "/customers", icon: Users, label: "Clientes" },
   { href: "/crm", icon: Megaphone, label: "CRM" },
+  { href: "/integracoes", icon: Plug, label: "Integrações" },
 ];
 
 export function Sidebar() {

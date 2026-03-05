@@ -63,6 +63,7 @@ class IFoodStoreCredential(models.Model):
     client_secret = models.CharField(max_length=255, help_text="Store encrypted in production")
     webhook_secret = models.CharField(max_length=255, blank=True, default="", help_text="Secret for X-IFood-Signature")
     access_token = models.TextField(blank=True, default="")
+    refresh_token = models.TextField(blank=True, default="")
     token_expires_at = models.DateTimeField(null=True, blank=True)
 
     is_active = models.BooleanField(default=True)

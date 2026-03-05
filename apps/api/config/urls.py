@@ -22,4 +22,5 @@ urlpatterns = [
     path("api/v1/", include("crm.urls")),
     path("api/v1/", include("stock.urls")),
     path("api/v1/", include("enterprise.urls")),
+    path("api/v1/", include("connectors.oauth.urls")),
 ]

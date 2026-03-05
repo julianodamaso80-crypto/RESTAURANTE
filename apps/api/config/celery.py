@@ -11,4 +11,5 @@ app.autodiscover_tasks()
 # Explicitly include task modules that are NOT named tasks.py
 app.conf.include = [
     "connectors.ifood.polling",
+    "connectors.ninetynine.polling",
 ]

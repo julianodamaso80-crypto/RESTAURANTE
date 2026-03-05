@@ -395,4 +395,34 @@ Polling funciona em qualquer ambiente com acesso à internet outbound.
 
 ---
 
-*Última atualização: PR 12 — próxima revisão obrigatória no PR 13.*
+---
+
+## ADR-023 — iFood OAuth 2.0 (Authorization Code, distributed model)
+
+**Status:** ✅ IMPLEMENTADO (PR 13)
+
+**Decisão:**
+OAuth 2.0 Authorization Code flow para iFood em modelo distribuído. App separado
+`connectors.oauth` gerencia o estado anti-CSRF (OAuthState). O `IFoodOAuthClient`
+em `connectors/ifood/oauth.py` encapsula toda interação com iFood auth API.
+
+Flow: Frontend POST → `connect/ifood/start/` (retorna `authorization_url`) →
+usuário autoriza no iFood → callback público `connect/ifood/callback/` →
+troca code por tokens → descobre merchant_id → salva `IFoodStoreCredential`.
+
+**Razão:** Self-service OAuth substitui configuração manual de credenciais.
+O modelo distribuído (Authorization Code) é exigido pelo iFood para integrações
+SaaS multi-tenant. OAuthState com TTL de 10 minutos previne ataques CSRF.
+
+**Consequências:**
+- `IFoodStoreCredential` ganha campo `refresh_token` (migration 0002).
+- Callback é endpoint público (sem auth JWT), segurança via state token.
+- Start endpoint usa DRF APIView + IsAuthenticated + ScopeMiddleware (`request.scope_store`).
+- `save_credentials` usa `update_or_create` — reconectar sobrescreve credencial existente.
+- Polling (`poll_ifood_orders`) captura automaticamente novas credenciais ativas.
+- `IntegrationStatusView` retorna status de iFood + 99Food para a store.
+- Disconnect apenas desativa (`is_active=False`), não deleta credencial.
+
+---
+
+*Última atualização: PR 13 — próxima revisão obrigatória no PR 14.*

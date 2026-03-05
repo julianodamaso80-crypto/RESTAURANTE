@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
+import { useAuthStore } from "@/store/auth";
+import axios from "axios";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const PLAN_LABELS: Record<string, string> = {
   starter: "Starter",
@@ -20,6 +24,8 @@ export default function CadastroPage() {
 
 function CadastroForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { setTokens, setUser, setTenant, setStore } = useAuthStore();
   const plan = searchParams.get("plan") || "";
   const planLabel = PLAN_LABELS[plan] || "";
 
@@ -28,9 +34,9 @@ function CadastroForm() {
     empresa: "",
     whatsapp: "",
     email: "",
+    senha: "",
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
   function update(field: keyof typeof form, value: string) {
@@ -43,62 +49,29 @@ function CadastroForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/cadastro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, plan }),
+      const { data } = await axios.post(`${API_URL}/api/v1/auth/register/`, {
+        nome_completo: form.nome,
+        email: form.email,
+        senha: form.senha,
+        nome_restaurante: form.empresa,
+        telefone: form.whatsapp,
       });
 
-      if (!res.ok) throw new Error("Erro ao enviar cadastro");
-      setSuccess(true);
-    } catch {
-      setError("Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
+      // Save tokens and user info
+      setTokens(data.access, data.refresh);
+      setUser(data.user);
+      if (data.tenant_id) setTenant(data.tenant_id);
+      if (data.store_id) setStore(data.store_id);
+
+      router.push("/operator");
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        "Erro ao criar conta. Tente novamente.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
-  }
-
-  if (success) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center relative overflow-hidden">
-        {/* Ambient glow effects */}
-        <div className="ambient-glow bg-success top-[-100px] left-[-100px]" />
-        <div className="ambient-glow bg-success/50 bottom-[-100px] right-[-100px]" />
-
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "radial-gradient(circle at 50% 40%, rgba(34,197,94,0.06) 0%, transparent 60%)",
-          }}
-        />
-
-        <div className="relative z-10 w-full max-w-[420px] px-6">
-          <div className="glass-card rounded-2xl p-8 shadow-card text-center">
-            <div className="relative w-20 h-20 mx-auto mb-6">
-              <div className="absolute inset-0 bg-success/20 rounded-full blur-xl" />
-              <div className="relative w-20 h-20 bg-success/10 border border-success/20 rounded-full flex items-center justify-center">
-                <svg className="w-10 h-10 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-            <h1 className="text-2xl font-sans font-bold text-foreground mb-3">
-              Cadastro recebido!
-            </h1>
-            <p className="text-muted text-sm mb-8 leading-relaxed">
-              Entraremos em contato pelo WhatsApp em breve para configurar sua conta
-              {planLabel && <> no plano <span className="text-accent font-semibold">{planLabel}</span></>}.
-            </p>
-            <a
-              href="/"
-              className="inline-block h-12 px-8 bg-surface-2 border border-border-light/50 rounded-lg text-sm text-foreground hover:border-accent hover:shadow-glow transition-all duration-300 leading-[3rem]"
-            >
-              Voltar ao site
-            </a>
-          </div>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -224,6 +197,23 @@ function CadastroForm() {
                 autoComplete="email"
                 className="input-luxury w-full h-12 px-4 bg-surface-2/80 border border-border-light/50 rounded-lg text-sm text-foreground placeholder:text-muted/50 focus:outline-none"
                 placeholder="maria@bomsabor.com.br"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="senha" className="block text-[11px] text-muted/80 uppercase tracking-[0.15em] mb-2 font-medium">
+                Senha
+              </label>
+              <input
+                id="senha"
+                type="password"
+                value={form.senha}
+                onChange={(e) => update("senha", e.target.value)}
+                required
+                minLength={6}
+                autoComplete="new-password"
+                className="input-luxury w-full h-12 px-4 bg-surface-2/80 border border-border-light/50 rounded-lg text-sm text-foreground placeholder:text-muted/50 focus:outline-none"
+                placeholder="Minimo 6 caracteres"
               />
             </div>
 

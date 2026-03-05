@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # Connectors
     "connectors.ifood",
     "connectors.ninetynine",
+    "connectors.oauth",
 ]
 
 # ---------------------------------------------------------------------------
@@ -244,11 +245,23 @@ structlog.configure(
 # ---------------------------------------------------------------------------
 IFOOD_WEBHOOK_SECRET = os.environ.get("IFOOD_WEBHOOK_SECRET", "")
 IFOOD_API_BASE_URL = os.environ.get("IFOOD_API_BASE_URL", "https://merchant-api.ifood.com.br")
+IFOOD_CLIENT_ID = os.environ.get("IFOOD_CLIENT_ID", "")
+IFOOD_CLIENT_SECRET = os.environ.get("IFOOD_CLIENT_SECRET", "")
+IFOOD_REDIRECT_URI = os.environ.get("IFOOD_REDIRECT_URI", "http://localhost:8000/api/v1/connect/ifood/callback/")
+IFOOD_AUTH_BASE = os.environ.get("IFOOD_AUTH_BASE", "https://merchant-api.ifood.com.br/authentication/v1.0")
+
+# ---------------------------------------------------------------------------
+# Frontend URL (for OAuth redirects)
+# ---------------------------------------------------------------------------
+FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL", "http://localhost:3000")
 
 # ---------------------------------------------------------------------------
 # 99Food Connector
 # ---------------------------------------------------------------------------
 NINETYNINE_WEBHOOK_SECRET = os.environ.get("NINETYNINE_WEBHOOK_SECRET", "")
-NINETYNINE_API_BASE_URL = os.environ.get("NINETYNINE_API_BASE_URL", "https://api.99app.com/v1")
+NINETYNINE_API_BASE_URL = os.environ.get(
+    "NINETYNINE_API_BASE_URL",
+    "https://openapi.didi-food.com/v4/opendelivery",
+)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
