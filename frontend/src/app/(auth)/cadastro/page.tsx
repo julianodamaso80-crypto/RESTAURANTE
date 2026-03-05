@@ -4,9 +4,7 @@ import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 import { useAuthStore } from "@/store/auth";
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import api from "@/lib/api";
 
 const PLAN_LABELS: Record<string, string> = {
   starter: "Starter",
@@ -49,7 +47,7 @@ function CadastroForm() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post(`${API_URL}/api/v1/auth/register/`, {
+      const { data } = await api.post("/api/v1/auth/register/", {
         nome_completo: form.nome,
         email: form.email,
         senha: form.senha,
