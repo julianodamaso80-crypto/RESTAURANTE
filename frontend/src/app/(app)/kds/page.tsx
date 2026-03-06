@@ -12,7 +12,7 @@ export default function KDSPage() {
   if (loadingStations || loadingTickets) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="font-mono text-muted text-sm animate-pulse">
+        <div className="text-muted text-sm animate-pulse">
           Carregando cozinha...
         </div>
       </div>
@@ -26,18 +26,18 @@ export default function KDSPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="Cozinha // KDS" />
+      <Header title="Cozinha" subtitle="KDS" />
 
       {/* Status bar */}
-      <div className="flex items-center gap-4 px-4 py-2 border-b border-border bg-surface">
+      <div className="flex items-center gap-4 px-4 py-2.5 border-b border-border bg-background-secondary">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          <span className="font-mono text-xs text-muted">
+          <span className="text-xs text-muted">
             Polling a cada 5s
           </span>
         </div>
         <span className="text-border">|</span>
-        <span className="font-mono text-xs text-muted">
+        <span className="text-xs text-muted tabular-nums">
           {inProgressCount} em preparo &middot; {waitingCount} na fila
         </span>
         <button

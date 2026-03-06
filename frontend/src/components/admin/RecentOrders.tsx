@@ -14,18 +14,18 @@ export function RecentOrders() {
   const orders = data?.results ?? [];
 
   return (
-    <div className="bg-surface border border-border rounded p-4">
-      <h3 className="text-muted text-xs font-mono uppercase tracking-wider mb-3">
+    <div className="bg-background-secondary border border-border rounded-lg shadow-card p-5">
+      <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
         Pedidos Recentes
       </h3>
       <div className="space-y-2">
         {orders.map((order) => (
           <div key={order.id} className="flex items-center gap-3">
-            <span className="font-mono text-foreground text-xs w-16 shrink-0">
+            <span className="text-foreground text-xs tabular-nums w-16 shrink-0">
               {order.display_id}
             </span>
             <StatusBadge status={order.status} />
-            <span className="font-mono text-accent text-xs ml-auto shrink-0">
+            <span className="text-primary text-xs tabular-nums ml-auto shrink-0">
               {formatCurrency(parseFloat(order.total || "0"))}
             </span>
             <span className="text-muted text-xs shrink-0">
@@ -34,7 +34,7 @@ export function RecentOrders() {
           </div>
         ))}
         {orders.length === 0 && (
-          <p className="text-muted text-xs font-mono">Sem pedidos hoje</p>
+          <p className="text-muted text-xs">Sem pedidos hoje</p>
         )}
       </div>
     </div>

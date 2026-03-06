@@ -14,7 +14,7 @@ export function ProductCard({ product, catalogId }: { product: Product; catalogI
     <>
       <button
         onClick={() => setModalOpen(true)}
-        className="w-full text-left flex items-center gap-4 p-4 rounded border border-[#3D2B1A] bg-[#1A1208] hover:bg-[#251A0E] transition-colors group"
+        className="w-full text-left flex items-center gap-4 p-4 rounded-lg border border-[#3D2B1A] bg-[#1A1208] hover:bg-[#251A0E] transition-colors group"
       >
         <div className="flex-1 min-w-0">
           <h3 className="text-[#FFF7ED] font-semibold text-sm leading-snug mb-1">
@@ -25,7 +25,7 @@ export function ProductCard({ product, catalogId }: { product: Product; catalogI
               {product.description}
             </p>
           )}
-          <p className="font-mono font-bold text-[#FBBF24] text-sm">
+          <p className="tabular-nums font-semibold text-[#FBBF24] text-sm">
             {formatCents(product.price_cents)}
           </p>
         </div>
@@ -37,10 +37,10 @@ export function ProductCard({ product, catalogId }: { product: Product; catalogI
               alt={product.name}
               width={80}
               height={80}
-              className="w-20 h-20 rounded bg-[#251A0E] border border-[#3D2B1A] object-cover"
+              className="w-20 h-20 rounded-lg bg-[#251A0E] border border-[#3D2B1A] object-cover"
             />
           ) : (
-            <div className="w-20 h-20 rounded bg-[#251A0E] border border-[#3D2B1A] flex items-center justify-center">
+            <div className="w-20 h-20 rounded-lg bg-[#251A0E] border border-[#3D2B1A] flex items-center justify-center">
               <span className="text-3xl">&#127869;</span>
             </div>
           )}

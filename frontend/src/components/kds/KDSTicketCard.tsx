@@ -32,9 +32,9 @@ export function KDSTicketCard({ ticket, onUpdate }: KDSTicketCardProps) {
   return (
     <div
       className={cn(
-        "border rounded p-3 transition-all",
-        isWaiting && "bg-surface border-border",
-        isInProgress && "bg-accent/5 border-accent/30",
+        "border rounded-lg p-4 transition-all",
+        isWaiting && "bg-background-secondary border-border",
+        isInProgress && "bg-primary/5 border-primary/30",
       )}
     >
       {/* Header */}
@@ -42,14 +42,14 @@ export function KDSTicketCard({ ticket, onUpdate }: KDSTicketCardProps) {
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "font-mono font-bold text-lg",
-              isInProgress ? "text-accent" : "text-foreground",
+              "font-semibold tabular-nums text-lg",
+              isInProgress ? "text-primary" : "text-foreground",
             )}
           >
             {ticket.order_display_number}
           </span>
           {isInProgress && (
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           )}
         </div>
         <KDSTimer
@@ -63,7 +63,7 @@ export function KDSTicketCard({ ticket, onUpdate }: KDSTicketCardProps) {
       <ul className="space-y-1 mb-3">
         {ticket.items?.map((item) => (
           <li key={item.id} className="flex items-baseline gap-2">
-            <span className="font-mono font-bold text-accent text-sm w-5 text-right shrink-0">
+            <span className="font-semibold tabular-nums text-primary text-sm w-5 text-right shrink-0">
               {item.quantity}x
             </span>
             <span className="text-foreground text-sm leading-tight">
@@ -78,7 +78,7 @@ export function KDSTicketCard({ ticket, onUpdate }: KDSTicketCardProps) {
         onClick={handleAdvance}
         disabled={loading}
         className={cn(
-          "w-full flex items-center justify-center gap-2 py-2 rounded font-mono text-xs uppercase tracking-wider font-bold transition-all",
+          "w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs uppercase tracking-wider font-semibold transition-all",
           isWaiting &&
             "bg-warning/10 text-warning border border-warning/20 hover:bg-warning/20",
           isInProgress &&

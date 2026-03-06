@@ -27,10 +27,10 @@ export function CampaignStatus() {
   const campaigns = data?.results ?? [];
 
   return (
-    <div className="bg-surface border border-border rounded p-4">
+    <div className="bg-background-secondary border border-border rounded-lg shadow-card p-5">
       <div className="flex items-center gap-2 mb-3">
         <Megaphone size={14} className="text-muted" />
-        <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
+        <h3 className="text-xs font-semibold text-muted uppercase tracking-wider">
           Campanhas
         </h3>
       </div>
@@ -41,14 +41,14 @@ export function CampaignStatus() {
               {campaign.name}
             </span>
             <span
-              className={`font-mono text-xs ${STATUS_COLOR[campaign.status] ?? "text-muted"}`}
+              className={`text-xs font-semibold ${STATUS_COLOR[campaign.status] ?? "text-muted"}`}
             >
               {campaign.status}
             </span>
           </div>
         ))}
         {campaigns.length === 0 && (
-          <p className="text-muted text-xs font-mono">Sem campanhas</p>
+          <p className="text-muted text-xs">Sem campanhas</p>
         )}
       </div>
     </div>

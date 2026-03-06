@@ -94,7 +94,7 @@ export function ProductModal({
                       key={option.id}
                       onClick={() => toggleModifier(option, group)}
                       className={cn(
-                        "w-full flex items-center justify-between p-3 rounded border text-sm transition-colors",
+                        "w-full flex items-center justify-between p-3 rounded-lg border text-sm transition-colors",
                         selected
                           ? "bg-[#F97316]/10 border-[#F97316]/30 text-[#FFF7ED]"
                           : "bg-[#251A0E] border-[#3D2B1A] text-[#D6B896] hover:border-[#7C5C3E]",
@@ -102,7 +102,7 @@ export function ProductModal({
                     >
                       <span>{option.name}</span>
                       {option.price_delta_cents !== 0 && (
-                        <span className="font-mono text-[#FBBF24] text-xs">
+                        <span className="tabular-nums text-[#FBBF24] text-xs">
                           +{formatCents(option.price_delta_cents)}
                         </span>
                       )}
@@ -122,7 +122,7 @@ export function ProductModal({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Ex: sem cebola, ponto da carne..."
-              className="w-full bg-[#251A0E] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm resize-none focus:outline-none focus:border-[#F97316] placeholder-[#7C5C3E]"
+              className="w-full bg-[#251A0E] border border-[#3D2B1A] rounded-lg p-3 text-[#FFF7ED] text-sm resize-none focus:outline-none focus:border-[#F97316] placeholder-[#7C5C3E]"
               rows={2}
             />
           </div>
@@ -137,7 +137,7 @@ export function ProductModal({
             >
               <Minus size={14} />
             </button>
-            <span className="font-mono font-bold text-[#FFF7ED] w-6 text-center">
+            <span className="tabular-nums font-semibold text-[#FFF7ED] w-6 text-center">
               {quantity}
             </span>
             <button
@@ -150,7 +150,7 @@ export function ProductModal({
 
           <button
             onClick={handleAdd}
-            className="flex-1 bg-[#F97316] text-black font-bold py-3 rounded text-sm"
+            className="flex-1 bg-[#F97316] text-black font-semibold py-3 rounded-lg text-sm"
           >
             Adicionar &middot; {formatCents(totalCents)}
           </button>

@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
-import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Toast } from "@/components/ui/Toast";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -21,153 +24,123 @@ export default function LoginPage() {
     try {
       await login(email, password);
     } catch {
-      setError("Credenciais inválidas. Verifique email e senha.");
+      setError("Credenciais invalidas. Verifique email e senha.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center relative overflow-hidden">
-      {/* Ambient glow effects */}
-      <div className="ambient-glow bg-accent top-[-100px] left-[-100px]" />
-      <div className="ambient-glow bg-accent/50 bottom-[-100px] right-[-100px]" />
+    <div className="min-h-screen bg-background flex">
+      {/* Left — Branding panel */}
+      <div className="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-background-secondary">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-primary/8 blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-accent/6 blur-[120px]" />
 
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(249,115,22,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.02) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(148,163,184,0.5) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
 
-      {/* Radial gradient overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(circle at 50% 40%, rgba(249,115,22,0.06) 0%, transparent 60%)",
-        }}
-      />
-
-      <div className="relative z-10 w-full max-w-[420px] px-6">
-        {/* Glass card */}
-        <div className="glass-card rounded-2xl p-8 shadow-card">
-          {/* Logo & Brand */}
-          <div className="flex flex-col items-center gap-4 mb-10">
-            <div className="relative">
-              <div className="absolute inset-0 bg-accent/20 rounded-xl blur-xl" />
-              <img
-                src="/assets/images/logo.png"
-                alt="Mesa Mestre"
-                width={72}
-                height={72}
-                className="relative rounded-xl shadow-glow"
-              />
-            </div>
-            <div className="text-center">
-              <h1 className="text-2xl font-sans font-bold text-foreground tracking-wide">
-                MESA <span className="text-accent">MESTRE</span>
-              </h1>
-              <p className="text-xs text-muted mt-1 tracking-widest uppercase">
-                Sistema para Restaurantes
-              </p>
-            </div>
+        <div className="relative z-10 flex flex-col justify-center px-16 xl:px-24 max-w-2xl">
+          <div className="flex items-center gap-3 mb-12">
+            <img src="/assets/images/logo.png" alt="MesaMestre" width={44} height={44} className="rounded-xl" />
+            <span className="text-xl font-semibold text-foreground">MesaMestre</span>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-[11px] text-muted/80 uppercase tracking-[0.15em] mb-2 font-medium"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-                className="input-luxury w-full h-12 px-4 bg-surface-2/80 border border-border-light/50 rounded-lg text-sm text-foreground placeholder:text-muted/50 focus:outline-none"
-                placeholder="operador@restaurante.com"
-              />
-            </div>
+          <h2 className="text-3xl xl:text-4xl font-bold text-foreground leading-tight mb-4">
+            Gerencie seu restaurante com
+            <span className="text-primary"> inteligencia</span>
+          </h2>
+          <p className="text-base text-muted-light leading-relaxed mb-10 max-w-lg">
+            Centralize pedidos do iFood e 99Food, organize sua cozinha com KDS,
+            controle estoque e fidelize clientes — tudo em uma plataforma.
+          </p>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-[11px] text-muted/80 uppercase tracking-[0.15em] mb-2 font-medium"
-              >
-                Senha
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                  className="input-luxury w-full h-12 px-4 pr-12 bg-surface-2/80 border border-border-light/50 rounded-lg text-sm text-foreground placeholder:text-muted/50 focus:outline-none"
-                  placeholder="••••••••"
-                />
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              {[
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face",
+              ].map((src, i) => (
+                <img key={i} src={src} alt="" className="w-8 h-8 rounded-full border-2 border-background-secondary object-cover" loading="lazy" />
+              ))}
+            </div>
+            <p className="text-sm text-muted-light">
+              Usado por <span className="text-foreground font-medium">+500 restaurantes</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right — Login form */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-[400px]">
+          <div className="flex items-center gap-3 mb-10 lg:hidden">
+            <img src="/assets/images/logo.png" alt="MesaMestre" width={40} height={40} className="rounded-xl" />
+            <span className="text-lg font-semibold text-foreground">MesaMestre</span>
+          </div>
+
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-foreground mb-2">Bem-vindo de volta</h1>
+            <p className="text-sm text-muted">Entre com suas credenciais para acessar o sistema.</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              placeholder="seu@email.com"
+              leftIcon={<Mail className="w-4 h-4" />}
+            />
+
+            <Input
+              label="Senha"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              placeholder="Digite sua senha"
+              leftIcon={<Lock className="w-4 h-4" />}
+              rightIcon={
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors p-1"
-                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  className="hover:text-foreground transition-colors"
+                  tabIndex={-1}
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
-              </div>
-            </div>
+              }
+            />
 
-            {error && (
-              <div className="flex items-center gap-2 text-xs text-danger bg-danger/5 border border-danger/10 rounded-lg px-4 py-3">
-                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
-                </svg>
-                {error}
-              </div>
-            )}
+            {error && <Toast variant="error" message={error} />}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-shimmer w-full h-12 bg-gradient-to-r from-accent to-orange-500 text-black font-semibold text-sm rounded-lg hover:shadow-glow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <LoadingSpinner size="sm" />
-              ) : (
-                <>
-                  Entrar
-                  <span aria-hidden="true" className="text-lg">&rarr;</span>
-                </>
-              )}
-            </button>
+            <Button type="submit" loading={loading} className="w-full" size="lg">
+              Entrar
+            </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <a
-              href="/cadastro"
-              className="text-xs text-muted hover:text-accent transition-colors"
-            >
-              Ainda nao tem conta? <span className="text-accent font-medium">Criar conta</span>
-            </a>
-          </div>
-        </div>
+          <p className="text-center text-sm text-muted mt-8">
+            Ainda nao tem conta?{" "}
+            <Link href="/cadastro" className="text-primary font-medium hover:text-primary-400 transition-colors">
+              Criar conta
+            </Link>
+          </p>
 
-        <p className="text-center text-[11px] text-muted/50 mt-6 tracking-wide">
-          Mesa Mestre &copy; {new Date().getFullYear()}
-        </p>
+          <p className="text-center text-xs text-muted/60 mt-6">
+            MesaMestre &copy; {new Date().getFullYear()}
+          </p>
+        </div>
       </div>
     </div>
   );

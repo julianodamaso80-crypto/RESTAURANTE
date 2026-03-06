@@ -5,6 +5,10 @@ import { Header } from "@/components/layout/Header";
 import { MetricCard } from "@/components/shared/MetricCard";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { Toast } from "@/components/ui/Toast";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
 import { formatCurrency, timeAgo } from "@/lib/utils";
 import api from "@/lib/api";
 import {
@@ -21,25 +25,20 @@ import type { Customer, ConsentRecord, CustomerEvent, PaginatedResponse } from "
 
 type RFVFilter = "all" | "vip" | "active" | "inactive";
 
-function getRFVBadge(customer: Customer): { label: string; className: string } {
+function getRFVBadge(customer: Customer): { label: string; variant: "accent" | "success" | "info" | "danger" } {
   const freq = customer.rfv_frequency ?? 0;
   const monetary = customer.rfv_monetary_cents ?? 0;
   const recency = customer.rfv_recency_days ?? 999;
-
-  if (freq >= 10 && monetary >= 50000 && recency <= 30)
-    return { label: "VIP", className: "bg-amber-500/15 text-amber-500 border-amber-500/30" };
-  if (recency <= 30)
-    return { label: "Ativo", className: "bg-green-500/15 text-green-500 border-green-500/30" };
-  if (recency <= 90)
-    return { label: "Regular", className: "bg-blue-500/15 text-blue-500 border-blue-500/30" };
-  return { label: "Inativo", className: "bg-red-500/15 text-red-500 border-red-500/30" };
+  if (freq >= 10 && monetary >= 50000 && recency <= 30) return { label: "VIP", variant: "accent" };
+  if (recency <= 30) return { label: "Ativo", variant: "success" };
+  if (recency <= 90) return { label: "Regular", variant: "info" };
+  return { label: "Inativo", variant: "danger" };
 }
 
 function getRFVCategory(customer: Customer): RFVFilter {
   const freq = customer.rfv_frequency ?? 0;
   const monetary = customer.rfv_monetary_cents ?? 0;
   const recency = customer.rfv_recency_days ?? 999;
-
   if (freq >= 10 && monetary >= 50000 && recency <= 30) return "vip";
   if (recency <= 30) return "active";
   if (recency > 90) return "inactive";
@@ -68,9 +67,7 @@ export default function CustomersPage() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   useEffect(() => {
     if (toast) {
@@ -106,326 +103,221 @@ export default function CustomersPage() {
   const activeCount = customers.filter((c) => (c.rfv_recency_days ?? 999) <= 30).length;
   const inactiveCount = customers.filter((c) => (c.rfv_recency_days ?? 999) > 90).length;
   const vipCount = customers.filter((c) => getRFVCategory(c) === "vip").length;
+  const filters: { key: RFVFilter; label: string }[] = [
+    { key: "all", label: "Todos" },
+    { key: "vip", label: "VIP" },
+    { key: "active", label: "Ativos" },
+    { key: "inactive", label: "Inativos" },
+  ];
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto">
-      <Header title="Clientes // CDP" />
+    <div className="flex flex-col h-screen overflow-hidden">
+      <Header
+        title="Clientes"
+        subtitle="Customer Data Platform"
+        actions={
+          <Button variant="ghost" size="sm" onClick={() => { setLoading(true); fetchData(); }} icon={<RefreshCw className="w-3.5 h-3.5" />}>
+            Atualizar
+          </Button>
+        }
+      />
 
-      {/* Toast */}
-      {toast && (
-        <div
-          className={`mx-4 mt-3 px-4 py-3 rounded-lg text-sm flex items-center gap-2 ${
-            toast.type === "success"
-              ? "bg-success/10 border border-success/20 text-success"
-              : "bg-danger/10 border border-danger/20 text-danger"
-          }`}
-        >
-          {toast.msg}
+      <div className="flex-1 overflow-y-auto">
+        {toast && (
+          <div className="px-6 pt-4">
+            <Toast variant={toast.type === "success" ? "success" : "error"} message={toast.msg} onClose={() => setToast(null)} />
+          </div>
+        )}
+
+        {/* Metrics */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-6">
+          <MetricCard label="Total clientes" value={totalCustomers} icon={Users} />
+          <MetricCard label="Ativos (30d)" value={activeCount} icon={UserCheck} accent="green" />
+          <MetricCard label="Inativos (90d+)" value={inactiveCount} icon={UserX} accent={inactiveCount > 0 ? "red" : "default"} />
+          <MetricCard label="VIP" value={vipCount} icon={Crown} accent="yellow" />
         </div>
-      )}
 
-      {/* Metricas */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-4 border-b border-border">
-        <MetricCard label="Total clientes" value={totalCustomers} icon={Users} />
-        <MetricCard
-          label="Ativos (30d)"
-          value={activeCount}
-          icon={UserCheck}
-          accent="green"
-        />
-        <MetricCard
-          label="Inativos (90d+)"
-          value={inactiveCount}
-          icon={UserX}
-          accent={inactiveCount > 0 ? "red" : "default"}
-        />
-        <MetricCard label="VIP" value={vipCount} icon={Crown} accent="yellow" />
-      </div>
-
-      {/* Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border">
-        <div className="flex items-center gap-2">
-          {(["all", "vip", "active", "inactive"] as RFVFilter[]).map((f) => (
+        {/* Filters */}
+        <div className="px-6 pb-4 flex items-center gap-2">
+          {filters.map((f) => (
             <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`text-xs font-mono px-3 py-1 rounded border transition-colors ${
-                filter === f
-                  ? "bg-accent/10 text-accent border-accent/30"
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`text-sm px-3.5 py-1.5 rounded-lg border transition-all duration-200 ${
+                filter === f.key
+                  ? "bg-primary/10 text-primary border-primary/20 font-medium"
                   : "text-muted border-border hover:text-foreground hover:border-border-light"
               }`}
             >
-              {f === "all" ? "Todos" : f === "vip" ? "VIP" : f === "active" ? "Ativos" : "Inativos"}
+              {f.label}
             </button>
           ))}
         </div>
-        <button
-          onClick={() => { setLoading(true); fetchData(); }}
-          className="text-muted hover:text-foreground transition-colors"
-        >
-          <RefreshCw size={14} />
-        </button>
+
+        {/* Table */}
+        {loading ? (
+          <div className="flex items-center justify-center p-12">
+            <LoadingSpinner size="md" />
+          </div>
+        ) : filteredCustomers.length === 0 ? (
+          <EmptyState
+            icon={Users}
+            title="Nenhum cliente encontrado"
+            description={filter !== "all" ? "Nenhum cliente nesse segmento" : "Clientes aparecem automaticamente ao receber pedidos"}
+          />
+        ) : (
+          <div className="px-6 pb-6">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Telefone</TableHead>
+                  <TableHead>E-mail</TableHead>
+                  <TableHead className="text-right">Pedidos</TableHead>
+                  <TableHead className="text-right">Ticket medio</TableHead>
+                  <TableHead className="text-center">RFV</TableHead>
+                  <TableHead className="text-right">Ultima visita</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCustomers.map((customer) => {
+                  const badge = getRFVBadge(customer);
+                  const freq = customer.rfv_frequency ?? 0;
+                  const monetary = customer.rfv_monetary_cents ?? 0;
+                  const avgTicket = freq > 0 ? monetary / freq / 100 : 0;
+                  return (
+                    <TableRow key={customer.id} hover onClick={() => openDrawer(customer)}>
+                      <TableCell className="font-medium text-foreground">{customer.name || "Anonimo"}</TableCell>
+                      <TableCell className="text-muted text-xs">{customer.phone || "\u2014"}</TableCell>
+                      <TableCell className="text-muted text-xs">{customer.email || "\u2014"}</TableCell>
+                      <TableCell className="text-right tabular-nums text-foreground">{freq}</TableCell>
+                      <TableCell className="text-right tabular-nums text-foreground">{formatCurrency(avgTicket)}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge variant={badge.variant} dot>{badge.label}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right text-muted text-xs">
+                        {customer.rfv_last_order_at ? timeAgo(customer.rfv_last_order_at) : "\u2014"}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
 
-      {/* Tabela */}
-      {loading ? (
-        <div className="flex items-center justify-center p-12">
-          <LoadingSpinner size="md" />
-        </div>
-      ) : filteredCustomers.length === 0 ? (
-        <EmptyState
-          icon={Users}
-          title="Nenhum cliente encontrado"
-          description={filter !== "all" ? "Nenhum cliente nesse segmento" : "Clientes aparecem automaticamente ao receber pedidos"}
-        />
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-muted text-xs font-mono uppercase tracking-wider">
-                <th className="text-left px-4 py-3">Nome</th>
-                <th className="text-left px-4 py-3">Telefone</th>
-                <th className="text-left px-4 py-3">E-mail</th>
-                <th className="text-right px-4 py-3">Pedidos</th>
-                <th className="text-right px-4 py-3">Ticket medio</th>
-                <th className="text-center px-4 py-3">RFV</th>
-                <th className="text-right px-4 py-3">Ultima visita</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCustomers.map((customer) => {
-                const badge = getRFVBadge(customer);
-                const freq = customer.rfv_frequency ?? 0;
-                const monetary = customer.rfv_monetary_cents ?? 0;
-                const avgTicket = freq > 0 ? monetary / freq / 100 : 0;
-                return (
-                  <tr
-                    key={customer.id}
-                    onClick={() => openDrawer(customer)}
-                    className="border-b border-border/50 hover:bg-surface-2/50 transition-colors cursor-pointer"
-                  >
-                    <td className="px-4 py-3 text-foreground font-medium">
-                      {customer.name || "Anonimo"}
-                    </td>
-                    <td className="px-4 py-3 text-muted font-mono text-xs">
-                      {customer.phone || "—"}
-                    </td>
-                    <td className="px-4 py-3 text-muted text-xs">
-                      {customer.email || "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right font-mono text-foreground">
-                      {freq}
-                    </td>
-                    <td className="px-4 py-3 text-right font-mono text-foreground">
-                      {formatCurrency(avgTicket)}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <span
-                        className={`inline-flex items-center px-2 py-0.5 text-xs font-mono font-medium rounded border ${badge.className}`}
-                      >
-                        {badge.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right text-muted text-xs font-mono">
-                      {customer.rfv_last_order_at
-                        ? timeAgo(customer.rfv_last_order_at)
-                        : "—"}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Drawer de detalhe */}
+      {/* Drawer */}
       {selectedCustomer && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setSelectedCustomer(null)}
-          />
-          <div className="relative w-full max-w-md bg-surface border-l border-border h-full overflow-y-auto">
-            <div className="sticky top-0 bg-surface border-b border-border p-4 flex items-center justify-between z-10">
-              <h2 className="text-foreground font-semibold">
-                {selectedCustomer.name || "Anonimo"}
-              </h2>
-              <button
-                onClick={() => setSelectedCustomer(null)}
-                className="text-muted hover:text-foreground"
-              >
-                <X size={20} />
+        <div className="fixed inset-0 z-50 flex justify-end animate-fade-in">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSelectedCustomer(null)} />
+          <div className="relative w-full max-w-md bg-background-secondary border-l border-border h-full overflow-y-auto animate-slide-in-right shadow-elevation-4">
+            {/* Drawer header */}
+            <div className="sticky top-0 bg-background-secondary/95 backdrop-blur-sm border-b border-border p-5 flex items-center justify-between z-10">
+              <div>
+                <h2 className="text-base font-semibold text-foreground">{selectedCustomer.name || "Anonimo"}</h2>
+                <Badge variant={getRFVBadge(selectedCustomer).variant} dot className="mt-1">{getRFVBadge(selectedCustomer).label}</Badge>
+              </div>
+              <button onClick={() => setSelectedCustomer(null)} className="w-8 h-8 flex items-center justify-center rounded-lg text-muted hover:text-foreground hover:bg-surface transition-colors">
+                <X size={18} />
               </button>
             </div>
 
             {drawerLoading ? (
-              <div className="flex items-center justify-center p-12">
-                <LoadingSpinner size="md" />
-              </div>
+              <div className="flex items-center justify-center p-12"><LoadingSpinner size="md" /></div>
             ) : (
-              <div className="p-4 space-y-6">
-                {/* Info basica */}
-                <div className="space-y-2">
-                  <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
-                    Informacoes
-                  </h3>
-                  <div className="bg-surface-2 rounded-lg p-3 space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted">Telefone</span>
-                      <span className="text-foreground font-mono">
-                        {selectedCustomer.phone || "—"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted">E-mail</span>
-                      <span className="text-foreground">
-                        {selectedCustomer.email || "—"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted">Desde</span>
-                      <span className="text-foreground font-mono">
-                        {new Intl.DateTimeFormat("pt-BR").format(
-                          new Date(selectedCustomer.created_at)
-                        )}
-                      </span>
-                    </div>
+              <div className="p-5 space-y-6">
+                {/* Info */}
+                <section>
+                  <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Informacoes</h3>
+                  <div className="bg-surface/50 rounded-lg p-4 space-y-3 text-sm">
+                    {[
+                      { label: "Telefone", value: selectedCustomer.phone },
+                      { label: "E-mail", value: selectedCustomer.email },
+                      { label: "Desde", value: new Intl.DateTimeFormat("pt-BR").format(new Date(selectedCustomer.created_at)) },
+                    ].map(({ label, value }) => (
+                      <div key={label} className="flex justify-between">
+                        <span className="text-muted">{label}</span>
+                        <span className="text-foreground">{value || "\u2014"}</span>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                </section>
 
-                {/* RFV Score */}
-                <div className="space-y-2">
-                  <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
-                    Score RFV
-                  </h3>
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="bg-surface-2 rounded-lg p-3 text-center">
-                      <p className="text-xs text-muted">Recencia</p>
-                      <p className="text-lg font-mono font-bold text-foreground">
-                        {selectedCustomer.rfv_recency_days ?? "—"}
-                      </p>
-                      <p className="text-xs text-muted">dias</p>
-                    </div>
-                    <div className="bg-surface-2 rounded-lg p-3 text-center">
-                      <p className="text-xs text-muted">Frequencia</p>
-                      <p className="text-lg font-mono font-bold text-foreground">
-                        {selectedCustomer.rfv_frequency ?? "—"}
-                      </p>
-                      <p className="text-xs text-muted">pedidos</p>
-                    </div>
-                    <div className="bg-surface-2 rounded-lg p-3 text-center">
-                      <p className="text-xs text-muted">Monetario</p>
-                      <p className="text-lg font-mono font-bold text-foreground">
-                        {selectedCustomer.rfv_monetary_cents != null
-                          ? formatCurrency(selectedCustomer.rfv_monetary_cents / 100)
-                          : "—"}
-                      </p>
-                    </div>
+                {/* RFV */}
+                <section>
+                  <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Score RFV</h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { label: "Recencia", value: selectedCustomer.rfv_recency_days ?? "\u2014", sub: "dias" },
+                      { label: "Frequencia", value: selectedCustomer.rfv_frequency ?? "\u2014", sub: "pedidos" },
+                      { label: "Monetario", value: selectedCustomer.rfv_monetary_cents != null ? formatCurrency(selectedCustomer.rfv_monetary_cents / 100) : "\u2014" },
+                    ].map(({ label, value, sub }) => (
+                      <div key={label} className="bg-surface/50 rounded-lg p-3.5 text-center">
+                        <p className="text-xs text-muted mb-1">{label}</p>
+                        <p className="text-lg font-semibold text-foreground tabular-nums">{value}</p>
+                        {sub && <p className="text-xs text-muted">{sub}</p>}
+                      </div>
+                    ))}
                   </div>
-                </div>
+                </section>
 
-                {/* Consentimentos LGPD */}
-                <div className="space-y-2">
-                  <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
-                    Consentimentos LGPD
-                  </h3>
-                  <div className="bg-surface-2 rounded-lg p-3 space-y-2">
-                    {selectedCustomer.consent_summary &&
-                    Object.keys(selectedCustomer.consent_summary).length > 0 ? (
-                      Object.entries(selectedCustomer.consent_summary).map(
-                        ([channel, granted]) => (
-                          <div
-                            key={channel}
-                            className="flex items-center justify-between text-sm"
-                          >
-                            <span className="text-muted font-mono text-xs uppercase">
-                              {channel}
-                            </span>
-                            <span
-                              className={`flex items-center gap-1 text-xs font-mono ${
-                                granted ? "text-success" : "text-danger"
-                              }`}
-                            >
-                              {granted ? (
-                                <ShieldCheck size={12} />
-                              ) : (
-                                <ShieldOff size={12} />
-                              )}
-                              {granted ? "Concedido" : "Revogado"}
-                            </span>
-                          </div>
-                        )
-                      )
+                {/* LGPD */}
+                <section>
+                  <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Consentimentos LGPD</h3>
+                  <div className="bg-surface/50 rounded-lg p-4 space-y-2.5">
+                    {selectedCustomer.consent_summary && Object.keys(selectedCustomer.consent_summary).length > 0 ? (
+                      Object.entries(selectedCustomer.consent_summary).map(([channel, granted]) => (
+                        <div key={channel} className="flex items-center justify-between text-sm">
+                          <span className="text-muted uppercase text-xs">{channel}</span>
+                          <span className={`flex items-center gap-1.5 text-xs ${granted ? "text-emerald-400" : "text-red-400"}`}>
+                            {granted ? <ShieldCheck size={13} /> : <ShieldOff size={13} />}
+                            {granted ? "Concedido" : "Revogado"}
+                          </span>
+                        </div>
+                      ))
                     ) : (
-                      <p className="text-muted text-xs font-mono">
-                        Nenhum consentimento registrado
-                      </p>
+                      <p className="text-muted text-xs">Nenhum consentimento registrado</p>
                     )}
                   </div>
-                </div>
+                </section>
 
-                {/* Historico de consentimentos */}
+                {/* Consent history */}
                 {drawerConsents.length > 0 && (
-                  <div className="space-y-2">
-                    <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
-                      Historico de consentimentos
-                    </h3>
-                    <div className="space-y-1 max-h-40 overflow-y-auto">
+                  <section>
+                    <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Historico de consentimentos</h3>
+                    <div className="space-y-1.5 max-h-40 overflow-y-auto">
                       {drawerConsents.slice(0, 10).map((c) => (
-                        <div
-                          key={c.id}
-                          className="flex items-center justify-between text-xs bg-surface-2 rounded px-3 py-2"
-                        >
-                          <span className="text-muted font-mono">{c.channel}</span>
-                          <span
-                            className={
-                              c.status === "GRANTED"
-                                ? "text-success font-mono"
-                                : "text-danger font-mono"
-                            }
-                          >
+                        <div key={c.id} className="flex items-center justify-between text-xs bg-surface/50 rounded-lg px-3.5 py-2.5">
+                          <span className="text-muted uppercase">{c.channel}</span>
+                          <span className={c.status === "GRANTED" ? "text-emerald-400" : "text-red-400"}>
                             {c.status === "GRANTED" ? "Concedido" : "Revogado"}
                           </span>
-                          <span className="text-muted font-mono">
-                            {new Intl.DateTimeFormat("pt-BR", {
-                              day: "2-digit",
-                              month: "2-digit",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }).format(new Date(c.created_at))}
+                          <span className="text-muted tabular-nums">
+                            {new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }).format(new Date(c.created_at))}
                           </span>
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </section>
                 )}
 
-                {/* Eventos recentes */}
-                <div className="space-y-2">
-                  <h3 className="text-muted text-xs font-mono uppercase tracking-wider">
-                    Eventos recentes
-                  </h3>
+                {/* Events */}
+                <section>
+                  <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Eventos recentes</h3>
                   {drawerEvents.length === 0 ? (
-                    <p className="text-muted text-xs font-mono">Nenhum evento</p>
+                    <p className="text-muted text-xs">Nenhum evento</p>
                   ) : (
-                    <div className="space-y-1 max-h-60 overflow-y-auto">
+                    <div className="space-y-1.5 max-h-60 overflow-y-auto">
                       {drawerEvents.slice(0, 15).map((ev) => (
-                        <div
-                          key={ev.id}
-                          className="flex items-center justify-between text-xs bg-surface-2 rounded px-3 py-2"
-                        >
-                          <span className="text-foreground font-mono">
-                            {ev.event_type.replace(/_/g, " ")}
-                          </span>
-                          <span className="text-muted font-mono">
-                            {timeAgo(ev.occurred_at)}
-                          </span>
+                        <div key={ev.id} className="flex items-center justify-between text-xs bg-surface/50 rounded-lg px-3.5 py-2.5">
+                          <span className="text-foreground-secondary">{ev.event_type.replace(/_/g, " ")}</span>
+                          <span className="text-muted">{timeAgo(ev.occurred_at)}</span>
                         </div>
                       ))}
                     </div>
                   )}
-                </div>
+                </section>
               </div>
             )}
           </div>

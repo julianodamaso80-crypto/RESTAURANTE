@@ -29,23 +29,23 @@ export function QuotaBar() {
         : "text-success";
 
   return (
-    <div className="bg-surface border border-border rounded p-4">
+    <div className="bg-background-secondary border border-border rounded-lg shadow-card p-5">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-muted text-xs font-mono uppercase tracking-wider">
+        <span className="text-xs font-semibold text-muted uppercase tracking-wider">
           Quota CRM
         </span>
-        <span className={`font-mono text-xs font-bold ${textColor}`}>
+        <span className={`text-xs font-semibold tabular-nums ${textColor}`}>
           {data.current_period_contacts}/{data.max_contacts}
         </span>
       </div>
-      <div className="w-full h-1.5 bg-surface-2 rounded-full overflow-hidden">
+      <div className="w-full h-1.5 bg-surface/50 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all ${barColor}`}
           style={{ width: `${pct}%` }}
         />
       </div>
       {data.is_blocked && (
-        <p className="text-danger text-xs font-mono mt-2">
+        <p className="text-danger text-xs mt-2">
           Quota esgotada — disparos bloqueados
         </p>
       )}

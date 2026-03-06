@@ -34,7 +34,7 @@ export function KDSTimer({
   return (
     <span
       className={cn(
-        "font-mono font-bold tabular-nums",
+        "font-mono font-semibold tabular-nums",
         isCritical && "text-danger animate-pulse",
         isWarning && "text-warning",
         !isWarning && !isCritical && "text-muted",
