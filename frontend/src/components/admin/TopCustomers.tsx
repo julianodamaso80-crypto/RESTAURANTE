@@ -8,7 +8,7 @@ import type { Customer, PaginatedResponse } from "@/types/api";
 
 export function TopCustomers() {
   const { data } = useSWR<PaginatedResponse<Customer>>(
-    "/customers/?ordering=-total_spent&page_size=5",
+    "/customers/?ordering=-rfv_monetary_cents&page_size=5",
     (url: string) => api.get(url).then((r) => r.data)
   );
   const customers = data?.results ?? [];
@@ -29,14 +29,14 @@ export function TopCustomers() {
             </span>
             <div className="flex-1 min-w-0">
               <p className="text-foreground text-sm truncate">
-                {customer.full_name || customer.phone}
+                {customer.name || customer.phone}
               </p>
               <p className="text-muted text-xs font-mono">
-                {customer.total_orders} pedidos
+                {customer.rfv_frequency ?? 0} pedidos
               </p>
             </div>
             <span className="font-mono text-warning text-xs shrink-0">
-              {formatCurrency(parseFloat(customer.total_spent || "0"))}
+              {formatCurrency((customer.rfv_monetary_cents ?? 0) / 100)}
             </span>
           </div>
         ))}
