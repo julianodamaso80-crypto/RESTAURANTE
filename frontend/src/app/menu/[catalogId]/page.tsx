@@ -70,7 +70,7 @@ export default async function MenuPage({
             </h2>
             <div className="space-y-3">
               {category.products?.map((product: Product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} catalogId={params.catalogId} />
               ))}
             </div>
           </section>

@@ -2,12 +2,12 @@
 
 import { ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/store/cart";
-import { formatCurrency } from "@/lib/utils";
+import { formatCents } from "@/lib/utils";
 
 export function CartButton() {
   const openCart = useCartStore((s) => s.openCart);
   const totalItems = useCartStore((s) => s.totalItems);
-  const totalPrice = useCartStore((s) => s.totalPrice);
+  const totalPriceCents = useCartStore((s) => s.totalPriceCents);
 
   const count = totalItems();
   if (count === 0) return null;
@@ -25,7 +25,7 @@ export function CartButton() {
           </span>
         </div>
         <span>Ver carrinho</span>
-        <span className="font-mono">{formatCurrency(totalPrice())}</span>
+        <span className="font-mono">{formatCents(totalPriceCents())}</span>
       </button>
     </div>
   );

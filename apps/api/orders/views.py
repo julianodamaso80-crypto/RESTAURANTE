@@ -1,11 +1,18 @@
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .fsm import InvalidOrderTransition
 from .models import Order
-from .serializers import OrderCreateSerializer, OrderSerializer, OrderStatusUpdateSerializer
+from .serializers import (
+    OrderCreateSerializer,
+    OrderSerializer,
+    OrderStatusUpdateSerializer,
+    PublicOrderCreateSerializer,
+    PublicOrderSerializer,
+)
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -38,3 +45,24 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(OrderSerializer(order).data)
+
+
+class PublicOrderCreateView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = PublicOrderCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        return Response(PublicOrderSerializer(order).data, status=status.HTTP_201_CREATED)
+
+
+class PublicOrderDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        try:
+            order = Order.objects.prefetch_related("items").get(pk=pk)
+        except Order.DoesNotExist:
+            return Response({"detail": "Pedido n\u00e3o encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        return Response(PublicOrderSerializer(order).data)

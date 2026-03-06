@@ -80,27 +80,26 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  sku: string;
-  base_price: string;
-  is_active: boolean;
-  category: string;
-  modifier_groups: ModifierGroup[];
   image_url: string | null;
+  price_cents: number;
+  tags: string[];
+  is_available_now: boolean;
+  modifier_groups: ModifierGroup[];
 }
 
 export interface ModifierGroup {
   id: string;
   name: string;
-  min_selections: number;
-  max_selections: number;
+  min_choices: number;
+  max_choices: number;
   options: ModifierOption[];
 }
 
 export interface ModifierOption {
   id: string;
   name: string;
-  price: string;
-  is_active: boolean;
+  price_delta_cents: number;
+  is_default: boolean;
 }
 
 export interface CustomerIdentity {
@@ -251,14 +250,51 @@ export interface PublicCatalog {
   id: string;
   name: string;
   store_name: string;
+  store_id: string;
   categories: PublicCategory[];
 }
 
 export interface PublicCategory {
   id: string;
   name: string;
-  sort_order: number;
+  description: string;
+  image_url: string;
   products: Product[];
+}
+
+// Public order (own-channel)
+export type PaymentMethod = "CASH" | "CARD_ON_DELIVERY" | "PIX";
+export type OrderType = "DELIVERY" | "TAKEOUT" | "TABLE";
+
+export interface PublicOrder {
+  id: string;
+  display_number: string;
+  channel: string;
+  order_type: OrderType;
+  status: OrderStatus;
+  customer_name: string;
+  customer_phone: string;
+  subtotal_cents: number;
+  discount_cents: number;
+  delivery_fee_cents: number;
+  total_cents: number;
+  payment_method: PaymentMethod;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+  confirmed_at: string | null;
+  delivered_at: string | null;
+  cancelled_at: string | null;
+  items: PublicOrderItem[];
+}
+
+export interface PublicOrderItem {
+  id: string;
+  name: string;
+  quantity: number;
+  unit_price_cents: number;
+  total_cents: number;
+  notes: string;
 }
 
 export interface AuthTokens {

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { formatCurrency } from "@/lib/utils";
+import { formatCents } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { ProductModal } from "./ProductModal";
 import type { Product } from "@/types/api";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, catalogId }: { product: Product; catalogId: string }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -26,7 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
             </p>
           )}
           <p className="font-mono font-bold text-[#FBBF24] text-sm">
-            {formatCurrency(product.base_price)}
+            {formatCents(product.price_cents)}
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
             />
           ) : (
             <div className="w-20 h-20 rounded bg-[#251A0E] border border-[#3D2B1A] flex items-center justify-center">
-              <span className="text-3xl">🍽️</span>
+              <span className="text-3xl">&#127869;</span>
             </div>
           )}
           <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#F97316] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -51,7 +51,7 @@ export function ProductCard({ product }: { product: Product }) {
       </button>
 
       {modalOpen && (
-        <ProductModal product={product} onClose={() => setModalOpen(false)} />
+        <ProductModal product={product} catalogId={catalogId} onClose={() => setModalOpen(false)} />
       )}
     </>
   );

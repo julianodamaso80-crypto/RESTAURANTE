@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { X, Plus, Minus } from "lucide-react";
-import { formatCurrency, cn } from "@/lib/utils";
+import { formatCents, cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 import type { Product, ModifierGroup, ModifierOption } from "@/types/api";
 
 export function ProductModal({
   product,
+  catalogId,
   onClose,
 }: {
   product: Product;
+  catalogId: string;
   onClose: () => void;
 }) {
   const [quantity, setQuantity] = useState(1);
@@ -20,36 +22,34 @@ export function ProductModal({
   const [notes, setNotes] = useState("");
   const addItem = useCartStore((s) => s.addItem);
 
-  const modifierTotal = selectedModifiers.reduce(
-    (sum, m) => sum + parseFloat(m.price),
+  const modifierTotalCents = selectedModifiers.reduce(
+    (sum, m) => sum + m.price_delta_cents,
     0,
   );
-  const total = (parseFloat(product.base_price) + modifierTotal) * quantity;
+  const totalCents = (product.price_cents + modifierTotalCents) * quantity;
 
   function toggleModifier(option: ModifierOption, group: ModifierGroup) {
     if (selectedModifiers.find((m) => m.id === option.id)) {
       setSelectedModifiers((prev) => prev.filter((m) => m.id !== option.id));
-    } else if (group.max_selections === 1) {
-      // Radio-style: remove all from this group, add selected
+    } else if (group.max_choices === 1) {
       const groupOptionIds = new Set(group.options.map((o) => o.id));
       setSelectedModifiers((prev) => [
         ...prev.filter((m) => !groupOptionIds.has(m.id)),
         option,
       ]);
     } else {
-      // Multi-select: check if under max
       const groupOptionIds = new Set(group.options.map((o) => o.id));
       const inGroup = selectedModifiers.filter((m) =>
         groupOptionIds.has(m.id),
       );
-      if (inGroup.length < group.max_selections) {
+      if (inGroup.length < group.max_choices) {
         setSelectedModifiers((prev) => [...prev, option]);
       }
     }
   }
 
   function handleAdd() {
-    addItem(product, quantity, selectedModifiers, notes);
+    addItem(product, quantity, selectedModifiers, notes, catalogId);
     onClose();
   }
 
@@ -81,7 +81,7 @@ export function ProductModal({
                   {group.name}
                 </h3>
                 <span className="text-[#7C5C3E] text-xs">
-                  {group.min_selections > 0 ? "Obrigatório" : "Opcional"}
+                  {group.min_choices > 0 ? "Obrigatorio" : "Opcional"}
                 </span>
               </div>
               <div className="space-y-1">
@@ -89,7 +89,6 @@ export function ProductModal({
                   const selected = selectedModifiers.some(
                     (m) => m.id === option.id,
                   );
-                  const price = parseFloat(option.price);
                   return (
                     <button
                       key={option.id}
@@ -102,9 +101,9 @@ export function ProductModal({
                       )}
                     >
                       <span>{option.name}</span>
-                      {price !== 0 && (
+                      {option.price_delta_cents !== 0 && (
                         <span className="font-mono text-[#FBBF24] text-xs">
-                          +{formatCurrency(price)}
+                          +{formatCents(option.price_delta_cents)}
                         </span>
                       )}
                     </button>
@@ -117,7 +116,7 @@ export function ProductModal({
           {/* Notes */}
           <div>
             <label className="text-[#7C5C3E] text-xs block mb-1">
-              Observações
+              Observacoes
             </label>
             <textarea
               value={notes}
@@ -153,7 +152,7 @@ export function ProductModal({
             onClick={handleAdd}
             className="flex-1 bg-[#F97316] text-black font-bold py-3 rounded text-sm"
           >
-            Adicionar · {formatCurrency(total)}
+            Adicionar &middot; {formatCents(totalCents)}
           </button>
         </div>
       </div>

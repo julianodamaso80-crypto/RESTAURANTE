@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from tenants.models import Store, Tenant, User
 
-from .enums import OrderChannel, OrderStatus, OrderType
+from .enums import OrderChannel, OrderStatus, OrderType, PaymentMethod
 from .fsm import transition
 
 
@@ -35,6 +35,16 @@ class Order(models.Model):
     confirmed_at = models.DateTimeField(null=True, blank=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
     cancelled_at = models.DateTimeField(null=True, blank=True)
+
+    # Customer info (own-channel orders)
+    customer_name = models.CharField(max_length=255, blank=True, default="")
+    customer_phone = models.CharField(max_length=30, blank=True, default="")
+    customer_email = models.EmailField(blank=True, default="")
+    delivery_address = models.JSONField(null=True, blank=True, help_text="Structured address for delivery orders")
+    payment_method = models.CharField(
+        max_length=20, choices=PaymentMethod.choices, blank=True, default=""
+    )
+    change_for_cents = models.PositiveIntegerField(null=True, blank=True, help_text="Change amount for cash payments")
 
     # Metadata
     notes = models.TextField(blank=True, default="")
