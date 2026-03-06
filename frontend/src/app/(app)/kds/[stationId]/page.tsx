@@ -17,7 +17,7 @@ export default function KDSStationPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="font-mono text-muted text-sm animate-pulse">
+        <div className="text-muted text-sm animate-pulse">
           Carregando estação...
         </div>
       </div>
@@ -31,25 +31,25 @@ export default function KDSStationPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title={station ? `Cozinha // ${station.name}` : "Cozinha"} />
+      <Header title="Cozinha" subtitle={station?.name} />
 
       {/* Status bar */}
-      <div className="flex items-center gap-4 px-4 py-2 border-b border-border bg-surface">
+      <div className="flex items-center gap-4 px-4 py-2.5 border-b border-border bg-background-secondary">
         <Link
           href="/kds"
-          className="flex items-center gap-1 text-muted hover:text-foreground transition-colors font-mono text-xs"
+          className="flex items-center gap-1 text-muted hover:text-foreground transition-colors text-xs font-semibold"
         >
           <ArrowLeft size={12} /> Todas estações
         </Link>
         <span className="text-border">|</span>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          <span className="font-mono text-xs text-muted">
+          <span className="text-xs text-muted">
             Polling a cada 5s
           </span>
         </div>
         <span className="text-border">|</span>
-        <span className="font-mono text-xs text-muted">
+        <span className="text-xs text-muted tabular-nums">
           {inProgressCount} em preparo &middot; {waitingCount} na fila
         </span>
         <button
@@ -69,7 +69,7 @@ export default function KDSStationPage() {
           </div>
         ) : (
           <div className="flex items-center justify-center h-full">
-            <p className="text-muted font-mono text-sm">
+            <p className="text-muted text-sm">
               Estação não encontrada
             </p>
           </div>

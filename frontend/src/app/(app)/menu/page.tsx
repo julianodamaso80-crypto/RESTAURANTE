@@ -7,7 +7,7 @@ import { Store } from "lucide-react";
 export default function MenuPage() {
   return (
     <>
-      <Header title="Cardápio" />
+      <Header title="Cardápio" subtitle="Produtos e categorias" />
       <div className="p-6">
         <EmptyState
           icon={Store}

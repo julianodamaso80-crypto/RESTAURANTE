@@ -42,20 +42,20 @@ export default async function MenuPage({
 
   if (!catalog) {
     return (
-      <div className="min-h-screen bg-[#0F0A06] flex items-center justify-center">
-        <p className="text-[#7C5C3E] font-mono">Cardápio não encontrado</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted">Cardápio não encontrado</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0F0A06] text-[#FFF7ED]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero */}
-      <div className="px-4 py-8 text-center border-b border-[#3D2B1A]">
-        <h1 className="font-bold text-2xl text-[#FFF7ED] mb-1">
+      <div className="px-4 py-10 text-center border-b border-border">
+        <h1 className="font-semibold text-2xl text-foreground mb-1">
           {catalog.store_name}
         </h1>
-        <p className="text-[#7C5C3E] text-sm">{catalog.name}</p>
+        <p className="text-muted text-sm">{catalog.name}</p>
       </div>
 
       {/* Category navigation */}
@@ -65,7 +65,7 @@ export default async function MenuPage({
       <div className="max-w-2xl mx-auto px-4 pb-32">
         {catalog.categories?.map((category: PublicCategory) => (
           <section key={category.id} id={`cat-${category.id}`} className="pt-8">
-            <h2 className="font-bold text-[#D6B896] text-lg mb-4 uppercase tracking-wider text-sm font-mono">
+            <h2 className="font-semibold text-foreground-secondary text-sm mb-4 uppercase tracking-wider">
               {category.name}
             </h2>
             <div className="space-y-3">

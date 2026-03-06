@@ -47,7 +47,7 @@ export function CartDrawer() {
             items.map((item) => (
               <div
                 key={item.id}
-                className="bg-[#251A0E] border border-[#3D2B1A] rounded p-3"
+                className="bg-[#251A0E] border border-[#3D2B1A] rounded-lg p-3"
               >
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex-1 min-w-0">
@@ -85,7 +85,7 @@ export function CartDrawer() {
                     >
                       <Minus size={12} />
                     </button>
-                    <span className="font-mono text-[#FFF7ED] text-sm w-4 text-center">
+                    <span className="tabular-nums text-[#FFF7ED] text-sm w-4 text-center">
                       {item.quantity}
                     </span>
                     <button
@@ -97,7 +97,7 @@ export function CartDrawer() {
                       <Plus size={12} />
                     </button>
                   </div>
-                  <span className="font-mono font-bold text-[#FBBF24] text-sm">
+                  <span className="tabular-nums font-semibold text-[#FBBF24] text-sm">
                     {formatCents(item.totalPriceCents)}
                   </span>
                 </div>
@@ -111,13 +111,13 @@ export function CartDrawer() {
           <div className="border-t border-[#3D2B1A] p-4 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[#D6B896] text-sm">Total</span>
-              <span className="font-mono font-bold text-[#FBBF24] text-lg">
+              <span className="tabular-nums font-semibold text-[#FBBF24] text-lg">
                 {formatCents(totalPriceCents())}
               </span>
             </div>
             <button
               onClick={handleCheckout}
-              className="w-full bg-[#F97316] text-black font-bold py-3 rounded text-sm"
+              className="w-full bg-[#F97316] text-black font-semibold py-3 rounded-lg text-sm"
             >
               Ir para Checkout
             </button>

@@ -26,7 +26,7 @@ export function KDSBoard({ stations, tickets, onUpdate }: KDSBoardProps) {
         ))}
         {stations.length === 0 && (
           <div className="flex items-center justify-center w-full">
-            <p className="text-muted font-mono text-sm">
+            <p className="text-muted text-sm">
               Nenhuma estação configurada
             </p>
           </div>

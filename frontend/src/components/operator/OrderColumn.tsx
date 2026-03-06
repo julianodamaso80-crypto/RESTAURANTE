@@ -1,12 +1,12 @@
 import { OrderCard } from "./OrderCard";
 import type { Order, OrderStatus } from "@/types/api";
 
-const COLUMN_CONFIG: Partial<Record<OrderStatus, { label: string; color: string }>> = {
-  PENDING: { label: "Novos", color: "text-yellow-500" },
-  CONFIRMED: { label: "Confirmados", color: "text-blue-500" },
-  IN_PREPARATION: { label: "Preparando", color: "text-purple-400" },
-  READY: { label: "Prontos", color: "text-success" },
-  DISPATCHED: { label: "Despachados", color: "text-accent" },
+const COLUMN_CONFIG: Partial<Record<OrderStatus, { label: string; color: string; bg: string }>> = {
+  PENDING: { label: "Novos", color: "text-amber-400", bg: "bg-amber-500/10" },
+  CONFIRMED: { label: "Confirmados", color: "text-blue-400", bg: "bg-blue-500/10" },
+  IN_PREPARATION: { label: "Preparando", color: "text-violet-400", bg: "bg-violet-500/10" },
+  READY: { label: "Prontos", color: "text-emerald-400", bg: "bg-emerald-500/10" },
+  DISPATCHED: { label: "Despachados", color: "text-primary", bg: "bg-primary/10" },
 };
 
 export function OrderColumn({
@@ -22,22 +22,23 @@ export function OrderColumn({
   if (!config) return null;
 
   return (
-    <div className="flex flex-col min-w-[260px] max-w-[280px]">
-      <div className="flex items-center gap-2 mb-3">
-        <h2 className={`font-mono font-bold text-xs uppercase tracking-widest ${config.color}`}>
+    <div className="flex flex-col min-w-[280px] max-w-[300px]">
+      <div className="flex items-center gap-2.5 mb-3 px-1">
+        <div className={`w-2 h-2 rounded-full ${config.color.replace("text-", "bg-")}`} />
+        <h2 className={`font-semibold text-xs uppercase tracking-wider ${config.color}`}>
           {config.label}
         </h2>
-        <span className="font-mono text-xs text-muted bg-surface-2 px-2 py-0.5 rounded">
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${config.bg} ${config.color}`}>
           {orders.length}
         </span>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         {orders.map((order) => (
           <OrderCard key={order.id} order={order} onUpdate={onUpdate} />
         ))}
         {orders.length === 0 && (
-          <div className="border border-dashed border-border rounded p-4 flex items-center justify-center">
-            <p className="text-muted font-mono text-xs">Vazio</p>
+          <div className="border border-dashed border-border rounded-lg p-6 flex items-center justify-center">
+            <p className="text-muted text-xs">Nenhum pedido</p>
           </div>
         )}
       </div>

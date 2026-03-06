@@ -26,7 +26,7 @@ export function CategoryNav({
             key={cat.id}
             onClick={() => scrollTo(cat.id)}
             className={cn(
-              "px-4 py-3 text-sm font-mono uppercase tracking-wider transition-colors whitespace-nowrap border-b-2",
+              "px-4 py-3 text-sm font-semibold uppercase tracking-wider transition-colors whitespace-nowrap border-b-2",
               active === cat.id
                 ? "text-[#F97316] border-[#F97316]"
                 : "text-[#7C5C3E] border-transparent hover:text-[#D6B896]",

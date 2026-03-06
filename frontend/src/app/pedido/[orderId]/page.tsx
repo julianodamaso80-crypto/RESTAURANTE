@@ -56,17 +56,17 @@ export default function OrderTrackingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0F0A06] flex items-center justify-center">
-        <Loader2 size={32} className="animate-spin text-[#F97316]" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 size={32} className="animate-spin text-primary" />
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-[#0F0A06] flex flex-col items-center justify-center gap-4">
-        <p className="text-red-400 font-mono">{error || "Pedido nao encontrado."}</p>
-        <button onClick={() => router.push("/")} className="text-[#F97316] text-sm underline">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-red-400">{error || "Pedido nao encontrado."}</p>
+        <button onClick={() => router.push("/")} className="text-primary text-sm underline">
           Voltar
         </button>
       </div>
@@ -78,26 +78,26 @@ export default function OrderTrackingPage() {
   const isFinal = order.status === "DELIVERED" || isCancelled;
 
   return (
-    <div className="min-h-screen bg-[#0F0A06] text-[#FFF7ED]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="px-4 py-6 text-center border-b border-[#3D2B1A]">
-        <div className="inline-flex items-center gap-2 bg-[#F97316]/10 border border-[#F97316]/30 rounded-full px-4 py-2 mb-3">
-          <CheckCircle2 size={16} className="text-[#F97316]" />
-          <span className="text-[#F97316] font-semibold text-sm">
+      <div className="px-4 py-8 text-center border-b border-border">
+        <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2 mb-3">
+          <CheckCircle2 size={16} className="text-primary" />
+          <span className="text-primary font-semibold text-sm">
             {isCancelled ? "Pedido cancelado" : isFinal ? "Pedido entregue" : "Pedido recebido!"}
           </span>
         </div>
-        <h1 className="font-bold text-2xl text-[#FFF7ED]">
+        <h1 className="font-semibold text-2xl text-foreground">
           Pedido {order.display_number}
         </h1>
         {!isFinal && (
-          <p className="text-[#7C5C3E] text-sm mt-1">
+          <p className="text-muted text-sm mt-1">
             Tempo estimado: 30-45 minutos
           </p>
         )}
       </div>
 
-      <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-lg mx-auto px-4 py-8 space-y-8">
         {/* Status tracker */}
         {!isCancelled && (
           <div className="space-y-0">
@@ -112,10 +112,10 @@ export default function OrderTrackingPage() {
                       className={cn(
                         "w-8 h-8 rounded-full flex items-center justify-center border-2",
                         isCurrent
-                          ? "bg-[#F97316] border-[#F97316] text-black"
+                          ? "bg-primary border-primary text-white"
                           : isActive
-                            ? "bg-[#F97316]/20 border-[#F97316] text-[#F97316]"
-                            : "bg-[#1A1208] border-[#3D2B1A] text-[#7C5C3E]",
+                            ? "bg-primary/20 border-primary text-primary"
+                            : "bg-background-secondary border-border text-muted",
                       )}
                     >
                       <Icon size={14} />
@@ -124,7 +124,7 @@ export default function OrderTrackingPage() {
                       <div
                         className={cn(
                           "w-0.5 h-6",
-                          isActive ? "bg-[#F97316]/40" : "bg-[#3D2B1A]",
+                          isActive ? "bg-primary/40" : "bg-surface",
                         )}
                       />
                     )}
@@ -133,7 +133,7 @@ export default function OrderTrackingPage() {
                     <span
                       className={cn(
                         "text-sm font-semibold",
-                        isActive ? "text-[#FFF7ED]" : "text-[#7C5C3E]",
+                        isActive ? "text-foreground" : "text-muted",
                       )}
                     >
                       {stepInfo.label}
@@ -146,26 +146,26 @@ export default function OrderTrackingPage() {
         )}
 
         {isCancelled && (
-          <div className="bg-red-900/20 border border-red-800 rounded p-4 text-center">
+          <div className="bg-red-900/20 border border-red-800 rounded-lg p-4 text-center">
             <p className="text-red-400 font-semibold">Este pedido foi cancelado.</p>
           </div>
         )}
 
         {/* Order items */}
         <div>
-          <h2 className="text-[#D6B896] font-semibold text-sm mb-3">Itens do pedido</h2>
+          <h2 className="text-foreground-secondary font-semibold text-sm mb-3">Itens do pedido</h2>
           <div className="space-y-2">
             {order.items.map((item) => (
-              <div key={item.id} className="flex justify-between items-start bg-[#1A1208] border border-[#3D2B1A] rounded p-3">
+              <div key={item.id} className="flex justify-between items-start bg-background-secondary border border-border rounded-lg p-3.5">
                 <div>
-                  <span className="text-[#FFF7ED] text-sm">
+                  <span className="text-foreground text-sm">
                     {item.quantity}x {item.name}
                   </span>
                   {item.notes && (
-                    <p className="text-[#7C5C3E] text-xs mt-0.5">{item.notes}</p>
+                    <p className="text-muted text-xs mt-0.5">{item.notes}</p>
                   )}
                 </div>
-                <span className="font-mono text-[#FBBF24] text-sm">
+                <span className="tabular-nums text-primary text-sm font-semibold">
                   {formatCents(item.total_cents)}
                 </span>
               </div>
@@ -174,27 +174,27 @@ export default function OrderTrackingPage() {
         </div>
 
         {/* Totals */}
-        <div className="border-t border-[#3D2B1A] pt-3 space-y-1">
+        <div className="border-t border-border pt-4 space-y-1.5">
           <div className="flex justify-between text-sm">
-            <span className="text-[#7C5C3E]">Subtotal</span>
-            <span className="font-mono text-[#FFF7ED]">{formatCents(order.subtotal_cents)}</span>
+            <span className="text-muted">Subtotal</span>
+            <span className="tabular-nums text-foreground">{formatCents(order.subtotal_cents)}</span>
           </div>
           {order.delivery_fee_cents > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-[#7C5C3E]">Taxa de entrega</span>
-              <span className="font-mono text-[#FFF7ED]">{formatCents(order.delivery_fee_cents)}</span>
+              <span className="text-muted">Taxa de entrega</span>
+              <span className="tabular-nums text-foreground">{formatCents(order.delivery_fee_cents)}</span>
             </div>
           )}
-          <div className="flex justify-between font-bold pt-1">
-            <span className="text-[#D6B896]">Total</span>
-            <span className="font-mono text-[#FBBF24] text-lg">{formatCents(order.total_cents)}</span>
+          <div className="flex justify-between font-semibold pt-1">
+            <span className="text-foreground-secondary">Total</span>
+            <span className="tabular-nums text-primary text-lg">{formatCents(order.total_cents)}</span>
           </div>
         </div>
 
         {/* Back button */}
         <button
           onClick={() => router.push("/")}
-          className="w-full bg-[#251A0E] border border-[#3D2B1A] text-[#D6B896] font-semibold py-3 rounded text-sm hover:border-[#F97316] transition-colors"
+          className="w-full bg-surface/50 border border-border text-foreground-secondary font-semibold py-3 rounded-lg text-sm hover:border-primary transition-colors"
         >
           Voltar ao cardapio
         </button>

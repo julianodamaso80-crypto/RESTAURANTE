@@ -60,11 +60,11 @@ export default function CheckoutPage() {
   // Redirect if cart is empty
   if (items.length === 0 && step === 1) {
     return (
-      <div className="min-h-screen bg-[#0F0A06] flex flex-col items-center justify-center gap-4">
-        <p className="text-[#7C5C3E] font-mono">Carrinho vazio</p>
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted">Carrinho vazio</p>
         <button
           onClick={() => router.back()}
-          className="text-[#F97316] text-sm underline"
+          className="text-primary text-sm underline"
         >
           Voltar ao cardapio
         </button>
@@ -137,26 +137,26 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F0A06] text-[#FFF7ED]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="px-4 py-4 border-b border-[#3D2B1A] flex items-center gap-3">
-        <button onClick={() => (step > 1 ? setStep(step - 1) : router.back())} className="text-[#7C5C3E] hover:text-[#FFF7ED]">
+      <div className="px-4 py-5 border-b border-border flex items-center gap-3">
+        <button onClick={() => (step > 1 ? setStep(step - 1) : router.back())} className="text-muted hover:text-foreground">
           <ArrowLeft size={20} />
         </button>
-        <h1 className="font-bold text-lg">Checkout</h1>
-        <span className="ml-auto text-[#7C5C3E] text-xs font-mono">
+        <h1 className="font-semibold text-lg">Checkout</h1>
+        <span className="ml-auto text-muted text-xs tabular-nums">
           Etapa {step} de 3
         </span>
       </div>
 
       {/* Step indicators */}
-      <div className="flex gap-1 px-4 py-3">
+      <div className="flex gap-1.5 px-4 py-3">
         {[1, 2, 3].map((s) => (
           <div
             key={s}
             className={cn(
               "flex-1 h-1 rounded-full",
-              s <= step ? "bg-[#F97316]" : "bg-[#3D2B1A]",
+              s <= step ? "bg-primary" : "bg-surface",
             )}
           />
         ))}
@@ -165,54 +165,54 @@ export default function CheckoutPage() {
       <div className="max-w-lg mx-auto px-4 pb-32">
         {/* Step 1: Identification */}
         {step === 1 && (
-          <div className="space-y-4 py-4">
-            <h2 className="text-[#D6B896] font-semibold">Identificacao</h2>
+          <div className="space-y-5 py-5">
+            <h2 className="text-foreground-secondary font-semibold">Identificacao</h2>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-1">Nome completo *</label>
+              <label className="text-muted text-xs block mb-1.5">Nome completo *</label>
               <input
                 type="text"
                 value={customer.name}
                 onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
-                className="w-full bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                className="w-full h-11 px-3.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder="Seu nome"
               />
             </div>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-1">Telefone / WhatsApp *</label>
+              <label className="text-muted text-xs block mb-1.5">Telefone / WhatsApp *</label>
               <input
                 type="tel"
                 value={customer.phone}
                 onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
-                className="w-full bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                className="w-full h-11 px-3.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder="(11) 99999-9999"
               />
             </div>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-1">E-mail (opcional)</label>
+              <label className="text-muted text-xs block mb-1.5">E-mail (opcional)</label>
               <input
                 type="email"
                 value={customer.email}
                 onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
-                className="w-full bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                className="w-full h-11 px-3.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder="voce@email.com"
               />
             </div>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-2">Tipo de entrega</label>
+              <label className="text-muted text-xs block mb-2">Tipo de entrega</label>
               <div className="flex gap-2">
                 {([["TAKEOUT", "Retirada no local"], ["DELIVERY", "Delivery"]] as const).map(([type, label]) => (
                   <button
                     key={type}
                     onClick={() => setCustomer({ ...customer, orderType: type })}
                     className={cn(
-                      "flex-1 py-3 rounded border text-sm font-semibold transition-colors",
+                      "flex-1 py-3 rounded-lg border text-sm font-semibold transition-colors",
                       customer.orderType === type
-                        ? "bg-[#F97316]/10 border-[#F97316] text-[#F97316]"
-                        : "bg-[#1A1208] border-[#3D2B1A] text-[#7C5C3E] hover:border-[#7C5C3E]",
+                        ? "bg-primary/10 border-primary text-primary"
+                        : "bg-background-secondary border-border text-muted hover:border-border-light",
                     )}
                   >
                     {label}
@@ -222,13 +222,13 @@ export default function CheckoutPage() {
             </div>
 
             {customer.orderType === "DELIVERY" && (
-              <div className="space-y-3 border border-[#3D2B1A] rounded p-3">
-                <h3 className="text-[#D6B896] text-xs font-semibold">Endereco de entrega</h3>
+              <div className="space-y-3 border border-border rounded-lg p-4">
+                <h3 className="text-foreground-secondary text-xs font-semibold">Endereco de entrega</h3>
                 <input
                   type="text"
                   value={customer.address.street}
                   onChange={(e) => setCustomer({ ...customer, address: { ...customer.address, street: e.target.value } })}
-                  className="w-full bg-[#0F0A06] border border-[#3D2B1A] rounded p-2 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                  className="w-full h-10 px-3 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Rua"
                 />
                 <div className="flex gap-2">
@@ -236,14 +236,14 @@ export default function CheckoutPage() {
                     type="text"
                     value={customer.address.number}
                     onChange={(e) => setCustomer({ ...customer, address: { ...customer.address, number: e.target.value } })}
-                    className="w-24 bg-[#0F0A06] border border-[#3D2B1A] rounded p-2 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                    className="w-24 h-10 px-3 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     placeholder="N"
                   />
                   <input
                     type="text"
                     value={customer.address.complement}
                     onChange={(e) => setCustomer({ ...customer, address: { ...customer.address, complement: e.target.value } })}
-                    className="flex-1 bg-[#0F0A06] border border-[#3D2B1A] rounded p-2 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                    className="flex-1 h-10 px-3 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     placeholder="Complemento"
                   />
                 </div>
@@ -251,14 +251,14 @@ export default function CheckoutPage() {
                   type="text"
                   value={customer.address.neighborhood}
                   onChange={(e) => setCustomer({ ...customer, address: { ...customer.address, neighborhood: e.target.value } })}
-                  className="w-full bg-[#0F0A06] border border-[#3D2B1A] rounded p-2 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                  className="w-full h-10 px-3 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Bairro"
                 />
                 <input
                   type="text"
                   value={customer.address.zipcode}
                   onChange={(e) => setCustomer({ ...customer, address: { ...customer.address, zipcode: e.target.value } })}
-                  className="w-full bg-[#0F0A06] border border-[#3D2B1A] rounded p-2 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                  className="w-full h-10 px-3 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="CEP"
                 />
               </div>
@@ -268,24 +268,24 @@ export default function CheckoutPage() {
 
         {/* Step 2: Order Summary */}
         {step === 2 && (
-          <div className="space-y-4 py-4">
-            <h2 className="text-[#D6B896] font-semibold">Resumo do pedido</h2>
+          <div className="space-y-5 py-5">
+            <h2 className="text-foreground-secondary font-semibold">Resumo do pedido</h2>
 
             <div className="space-y-2">
               {items.map((item) => (
-                <div key={item.id} className="bg-[#1A1208] border border-[#3D2B1A] rounded p-3">
+                <div key={item.id} className="bg-background-secondary border border-border rounded-lg p-3.5">
                   <div className="flex justify-between items-start">
                     <div>
-                      <span className="text-[#FFF7ED] text-sm font-semibold">
+                      <span className="text-foreground text-sm font-semibold">
                         {item.quantity}x {item.product.name}
                       </span>
                       {item.selectedModifiers.length > 0 && (
-                        <p className="text-[#7C5C3E] text-xs mt-0.5">
+                        <p className="text-muted text-xs mt-0.5">
                           {item.selectedModifiers.map((m) => m.name).join(", ")}
                         </p>
                       )}
                     </div>
-                    <span className="font-mono text-[#FBBF24] text-sm">
+                    <span className="tabular-nums text-primary text-sm font-semibold">
                       {formatCents(item.totalPriceCents)}
                     </span>
                   </div>
@@ -294,29 +294,29 @@ export default function CheckoutPage() {
             </div>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-1">Observacao geral</label>
+              <label className="text-muted text-xs block mb-1.5">Observacao geral</label>
               <textarea
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
-                className="w-full bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm resize-none focus:outline-none focus:border-[#F97316]"
+                className="w-full px-3.5 py-2.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted resize-none transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 rows={2}
                 placeholder="Alguma observacao para o restaurante?"
               />
             </div>
 
             <div>
-              <label className="text-[#7C5C3E] text-xs block mb-1">Cupom de desconto</label>
+              <label className="text-muted text-xs block mb-1.5">Cupom de desconto</label>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={coupon}
                   onChange={(e) => { setCoupon(e.target.value); setCouponMsg(""); }}
-                  className="flex-1 bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                  className="flex-1 h-11 px-3.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="CODIGO"
                 />
                 <button
                   onClick={handleApplyCoupon}
-                  className="px-4 py-2 bg-[#251A0E] border border-[#3D2B1A] rounded text-[#D6B896] text-sm hover:border-[#F97316]"
+                  className="px-4 py-2 bg-surface/50 border border-border rounded-lg text-foreground-secondary text-sm hover:border-primary transition-colors"
                 >
                   Aplicar
                 </button>
@@ -324,20 +324,20 @@ export default function CheckoutPage() {
               {couponMsg && <p className="text-red-400 text-xs mt-1">{couponMsg}</p>}
             </div>
 
-            <div className="border-t border-[#3D2B1A] pt-3 space-y-1">
+            <div className="border-t border-border pt-4 space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-[#7C5C3E]">Subtotal</span>
-                <span className="font-mono text-[#FFF7ED]">{formatCents(subtotalCents)}</span>
+                <span className="text-muted">Subtotal</span>
+                <span className="tabular-nums text-foreground">{formatCents(subtotalCents)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-[#7C5C3E]">Taxa de entrega</span>
-                <span className="font-mono text-[#FFF7ED]">
+                <span className="text-muted">Taxa de entrega</span>
+                <span className="tabular-nums text-foreground">
                   {customer.orderType === "TAKEOUT" ? "R$ 0,00" : formatCents(deliveryFeeCents)}
                 </span>
               </div>
-              <div className="flex justify-between text-sm font-bold pt-1">
-                <span className="text-[#D6B896]">Total</span>
-                <span className="font-mono text-[#FBBF24] text-lg">{formatCents(totalCents)}</span>
+              <div className="flex justify-between text-sm font-semibold pt-1">
+                <span className="text-foreground-secondary">Total</span>
+                <span className="tabular-nums text-primary text-lg">{formatCents(totalCents)}</span>
               </div>
             </div>
           </div>
@@ -345,8 +345,8 @@ export default function CheckoutPage() {
 
         {/* Step 3: Payment */}
         {step === 3 && (
-          <div className="space-y-4 py-4">
-            <h2 className="text-[#D6B896] font-semibold">Pagamento</h2>
+          <div className="space-y-5 py-5">
+            <h2 className="text-foreground-secondary font-semibold">Pagamento</h2>
 
             <div className="space-y-2">
               {([
@@ -358,15 +358,15 @@ export default function CheckoutPage() {
                   key={method}
                   onClick={() => setPaymentMethod(method)}
                   className={cn(
-                    "w-full flex items-center justify-between p-4 rounded border text-sm transition-colors",
+                    "w-full flex items-center justify-between p-4 rounded-lg border text-sm transition-colors",
                     paymentMethod === method
-                      ? "bg-[#F97316]/10 border-[#F97316] text-[#FFF7ED]"
-                      : "bg-[#1A1208] border-[#3D2B1A] text-[#D6B896] hover:border-[#7C5C3E]",
+                      ? "bg-primary/10 border-primary text-foreground"
+                      : "bg-background-secondary border-border text-foreground-secondary hover:border-border-light",
                   )}
                 >
                   <span className="font-semibold">{label}</span>
                   {paymentMethod === method && (
-                    <span className="w-3 h-3 rounded-full bg-[#F97316]" />
+                    <span className="w-3 h-3 rounded-full bg-primary" />
                   )}
                 </button>
               ))}
@@ -374,12 +374,12 @@ export default function CheckoutPage() {
 
             {paymentMethod === "CASH" && (
               <div>
-                <label className="text-[#7C5C3E] text-xs block mb-1">Troco para quanto? (R$)</label>
+                <label className="text-muted text-xs block mb-1.5">Troco para quanto? (R$)</label>
                 <input
                   type="number"
                   value={changeFor}
                   onChange={(e) => setChangeFor(e.target.value)}
-                  className="w-full bg-[#1A1208] border border-[#3D2B1A] rounded p-3 text-[#FFF7ED] text-sm focus:outline-none focus:border-[#F97316]"
+                  className="w-full h-11 px-3.5 bg-background-secondary border border-border rounded-lg text-sm text-foreground placeholder:text-muted transition-all duration-200 hover:border-border-light focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Ex: 50.00"
                   step="0.01"
                 />
@@ -387,25 +387,25 @@ export default function CheckoutPage() {
             )}
 
             {paymentMethod === "PIX" && (
-              <div className="bg-[#1A1208] border border-[#3D2B1A] rounded p-6 text-center">
-                <div className="w-40 h-40 mx-auto bg-[#251A0E] border border-[#3D2B1A] rounded flex items-center justify-center mb-3">
-                  <span className="text-[#7C5C3E] text-xs font-mono">QR Code PIX</span>
+              <div className="bg-background-secondary border border-border rounded-lg p-6 text-center">
+                <div className="w-40 h-40 mx-auto bg-surface/50 border border-border rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-muted text-xs">QR Code PIX</span>
                 </div>
-                <p className="text-[#7C5C3E] text-xs">
+                <p className="text-muted text-xs">
                   O QR Code sera gerado apos confirmar o pedido.
                 </p>
               </div>
             )}
 
-            <div className="border-t border-[#3D2B1A] pt-3">
-              <div className="flex justify-between font-bold">
-                <span className="text-[#D6B896]">Total a pagar</span>
-                <span className="font-mono text-[#FBBF24] text-lg">{formatCents(totalCents)}</span>
+            <div className="border-t border-border pt-4">
+              <div className="flex justify-between font-semibold">
+                <span className="text-foreground-secondary">Total a pagar</span>
+                <span className="tabular-nums text-primary text-lg">{formatCents(totalCents)}</span>
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-900/30 border border-red-800 rounded p-3">
+              <div className="bg-red-900/30 border border-red-800 rounded-lg p-3">
                 <p className="text-red-400 text-sm">{error}</p>
               </div>
             )}
@@ -414,7 +414,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#1A1208] border-t border-[#3D2B1A] p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-background-secondary border-t border-border p-4">
         <div className="max-w-lg mx-auto">
           {step < 3 ? (
             <button
@@ -426,7 +426,7 @@ export default function CheckoutPage() {
                 }
                 setStep(step + 1);
               }}
-              className="w-full bg-[#F97316] text-black font-bold py-3 rounded text-sm flex items-center justify-center gap-2"
+              className="w-full bg-primary text-white font-medium py-3 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-primary-600 transition-all duration-200 shadow-elevation-1"
             >
               Continuar <ArrowRight size={16} />
             </button>
@@ -434,7 +434,7 @@ export default function CheckoutPage() {
             <button
               onClick={handleConfirmOrder}
               disabled={loading}
-              className="w-full bg-[#F97316] text-black font-bold py-3 rounded text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full bg-primary text-white font-medium py-3 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-primary-600 transition-all duration-200 shadow-elevation-1 disabled:opacity-50"
             >
               {loading ? (
                 <>
