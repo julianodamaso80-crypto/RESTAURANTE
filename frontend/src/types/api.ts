@@ -103,27 +103,147 @@ export interface ModifierOption {
   is_active: boolean;
 }
 
+export interface CustomerIdentity {
+  id: string;
+  type: string;
+  value: string;
+  is_verified: boolean;
+  source: string;
+  created_at: string;
+}
+
+export interface ConsentRecord {
+  id: string;
+  channel: string;
+  status: "GRANTED" | "REVOKED";
+  source: string;
+  legal_basis: string;
+  created_at: string;
+}
+
+export interface CustomerEvent {
+  id: string;
+  event_type: string;
+  payload: Record<string, unknown>;
+  occurred_at: string;
+}
+
 export interface Customer {
   id: string;
-  full_name: string;
-  email: string | null;
+  name: string;
   phone: string | null;
-  total_orders: number;
-  total_spent: string;
-  last_order_at: string | null;
-  rfv_score: string | null;
+  email: string | null;
+  rfv_recency_days: number | null;
+  rfv_frequency: number | null;
+  rfv_monetary_cents: number | null;
+  rfv_last_order_at: string | null;
+  rfv_calculated_at: string | null;
+  is_active: boolean;
+  is_anonymous: boolean;
+  identities: CustomerIdentity[];
+  consent_summary: Record<string, boolean>;
   created_at: string;
+  updated_at: string;
+}
+
+export interface CustomerSegment {
+  id: string;
+  name: string;
+  description: string;
+  criteria: { criteria: string; value: unknown }[];
+  estimated_size: number;
+  created_at: string;
+}
+
+export interface CampaignTemplate {
+  id: string;
+  name: string;
+  channel: string;
+  subject: string;
+  body: string;
+  created_at: string;
+}
+
+export type CampaignStatusType = "DRAFT" | "SCHEDULED" | "RUNNING" | "COMPLETED" | "CANCELLED";
+
+export interface CampaignRun {
+  id: string;
+  status: string;
+  started_at: string | null;
+  completed_at: string | null;
+  total_recipients: number;
+  sent_count: number;
+  delivered_count: number;
+  failed_count: number;
+  opted_out_count: number;
+  error_detail: string;
+}
+
+export interface Campaign {
+  id: string;
+  name: string;
+  status: CampaignStatusType;
+  segment: string;
+  segment_name: string;
+  template: string;
+  template_name: string;
+  scheduled_at: string | null;
+  runs: CampaignRun[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BillingQuota {
+  max_contacts: number;
+  current_period_contacts: number;
+  usage_pct: number;
+  is_blocked: boolean;
+  is_near_limit: boolean;
+  period_start: string;
+  updated_at: string;
+}
+
+export interface StockLevel {
+  current_quantity: string;
+  is_below_minimum: boolean;
+  last_movement_at: string | null;
+  calculated_at: string | null;
 }
 
 export interface StockItem {
   id: string;
   name: string;
-  sku: string;
   unit: string;
-  current_level: number;
-  min_level: number;
-  max_level: number;
+  minimum_stock: string;
   is_active: boolean;
+  notes: string;
+  level: StockLevel | null;
+  created_at: string;
+}
+
+export type MovementType = "ENTRADA" | "SAIDA" | "AJUSTE" | "PERDA" | "INVENTARIO";
+
+export interface StockMovement {
+  id: string;
+  stock_item: string;
+  type: MovementType;
+  quantity: string;
+  notes: string;
+  reference_type: string;
+  reference_id: string;
+  occurred_at: string;
+}
+
+export interface StockAlert {
+  id: string;
+  stock_item: string;
+  stock_item_name: string;
+  stock_item_unit: string;
+  current_qty: number;
+  minimum_qty: number;
+  is_resolved: boolean;
+  created_at: string;
+  resolved_at: string | null;
 }
 
 // Public catalog (SSR menu page)
