@@ -8,6 +8,7 @@ from core.views import health_worker
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("health.urls")),
+    path("api/v1/", include("health.urls")),
     path("api/v1/auth/", include("authentication.urls")),
     path("api/v1/", include("tenants.urls")),
     path("api/v1/", include("rbac.urls")),
