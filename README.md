@@ -763,3 +763,49 @@ python manage.py seed --clear
 |---|---|---|
 | `owner@burguerpala.ce` | `demo123` | Owner (Burguer Palace) |
 | `manager.paulista@burguerpala.ce` | `demo123` | Manager (Paulista) |
+
+## Deploy (CD Pipeline)
+
+O deploy automatico e feito via GitHub Actions + Easypanel.
+
+### Como funciona
+
+```
+push na main
+  -> Job 1: roda lint (ruff) + pytest + npm run build
+  -> Job 2: redeploy backend (restaurante) via Easypanel API
+  -> Job 3: redeploy frontend (restaurante-frontend) via Easypanel API (paralelo)
+  -> Job 4: redeploy worker + beat (depende do backend para migrations)
+  -> Job 5: smoke test (GET /api/v1/health/ e GET /)
+```
+
+Se o smoke test falhar, um comentario e adicionado ao commit no GitHub.
+
+### Secrets necessarios no GitHub
+
+Configurar em **Settings > Secrets and variables > Actions**:
+
+| Secret | Descricao | Exemplo |
+|---|---|---|
+| `EASYPANEL_URL` | URL base do Easypanel (sem barra final) | `https://31.97.30.227:3000` |
+| `EASYPANEL_API_KEY` | API key do Easypanel (Settings > API) | `ep_...` |
+
+### Gerar API key no Easypanel
+
+1. Acesse o painel do Easypanel
+2. Va em **Settings > API**
+3. Clique em **Generate API Key**
+4. Copie a key e adicione como secret `EASYPANEL_API_KEY` no GitHub
+
+### Servicos no Easypanel
+
+| Servico | Descricao |
+|---|---|
+| `restaurante` | Backend Django (API) |
+| `restaurante-frontend` | Frontend Next.js |
+| `restaurante-worker` | Celery worker |
+| `restaurante-beat` | Celery Beat (tarefas periodicas) |
+
+### Deploy manual
+
+Caso precise fazer deploy manual, acesse o Easypanel e clique em "Implantar" no servico desejado.

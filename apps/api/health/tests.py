@@ -16,7 +16,8 @@ def test_health_returns_status_ok():
     client = Client()
     response = client.get("/health/")
     data = response.json()
-    assert data == {"status": "ok"}
+    assert data["status"] == "ok"
+    assert "version" in data
 
 
 def test_health_rejects_post():
