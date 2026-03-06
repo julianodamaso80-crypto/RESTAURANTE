@@ -98,11 +98,25 @@ class CatalogPublicSerializer(serializers.ModelSerializer):
     Exclui mapeamentos internos. Filtra produtos inativos.
     """
 
+    store_name = serializers.SerializerMethodField()
+    store_id = serializers.SerializerMethodField()
     categories = serializers.SerializerMethodField()
 
     class Meta:
         model = Catalog
-        fields = ["id", "name", "categories"]
+        fields = ["id", "name", "store_name", "store_id", "categories"]
+
+    def get_store_name(self, catalog):
+        if catalog.store:
+            return catalog.store.name
+        if catalog.company:
+            return catalog.company.name
+        return ""
+
+    def get_store_id(self, catalog):
+        if catalog.store:
+            return str(catalog.store.id)
+        return None
 
     def get_categories(self, catalog):
         active_cats = catalog.categories.filter(status="ACTIVE").order_by("display_order")

@@ -13,6 +13,13 @@ export function formatCurrency(value: string | number): string {
   }).format(num);
 }
 
+export function formatCents(cents: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(cents / 100);
+}
+
 export function formatDate(date: string | Date): string {
   const d = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("pt-BR", {

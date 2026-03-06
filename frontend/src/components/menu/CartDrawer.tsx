@@ -1,19 +1,26 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { X, Plus, Minus, Trash2 } from "lucide-react";
 import { useCartStore } from "@/store/cart";
-import { formatCurrency } from "@/lib/utils";
+import { formatCents } from "@/lib/utils";
 
 export function CartDrawer() {
+  const router = useRouter();
   const items = useCartStore((s) => s.items);
   const isOpen = useCartStore((s) => s.isOpen);
   const closeCart = useCartStore((s) => s.closeCart);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const clearCart = useCartStore((s) => s.clearCart);
-  const totalPrice = useCartStore((s) => s.totalPrice);
+  const totalPriceCents = useCartStore((s) => s.totalPriceCents);
 
   if (!isOpen) return null;
+
+  function handleCheckout() {
+    closeCart();
+    router.push("/checkout");
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -91,7 +98,7 @@ export function CartDrawer() {
                     </button>
                   </div>
                   <span className="font-mono font-bold text-[#FBBF24] text-sm">
-                    {formatCurrency(item.totalPrice)}
+                    {formatCents(item.totalPriceCents)}
                   </span>
                 </div>
               </div>
@@ -105,9 +112,15 @@ export function CartDrawer() {
             <div className="flex items-center justify-between">
               <span className="text-[#D6B896] text-sm">Total</span>
               <span className="font-mono font-bold text-[#FBBF24] text-lg">
-                {formatCurrency(totalPrice())}
+                {formatCents(totalPriceCents())}
               </span>
             </div>
+            <button
+              onClick={handleCheckout}
+              className="w-full bg-[#F97316] text-black font-bold py-3 rounded text-sm"
+            >
+              Ir para Checkout
+            </button>
             <button
               onClick={clearCart}
               className="w-full text-[#7C5C3E] text-xs hover:text-red-400 transition-colors"

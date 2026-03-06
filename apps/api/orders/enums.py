@@ -22,3 +22,9 @@ class OrderType(models.TextChoices):
     DELIVERY = "DELIVERY", "Entrega"
     TAKEOUT = "TAKEOUT", "Retirada"
     TABLE = "TABLE", "Mesa"
+
+
+class PaymentMethod(models.TextChoices):
+    CASH = "CASH", "Dinheiro"
+    CARD_ON_DELIVERY = "CARD_ON_DELIVERY", "Cartão na entrega"
+    PIX = "PIX", "PIX"
