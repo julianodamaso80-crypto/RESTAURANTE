@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # Connectors
     "connectors.ifood",
     "connectors.ninetynine",
+    "connectors.rappi",
     "connectors.oauth",
 ]
 

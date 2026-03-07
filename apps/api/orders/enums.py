@@ -15,6 +15,7 @@ class OrderChannel(models.TextChoices):
     OWN = "OWN", "Canal próprio"
     IFOOD = "IFOOD", "iFood"
     NINETYNINE = "99FOOD", "99Food"
+    RAPPI = "RAPPI", "Rappi"
     OTHER = "OTHER", "Outro"
 
 

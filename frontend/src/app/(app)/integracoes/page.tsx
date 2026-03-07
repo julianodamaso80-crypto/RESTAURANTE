@@ -17,6 +17,7 @@ interface IntegrationStatus {
   store_id: string;
   ifood: { status: string; merchant_id?: string };
   ninetynine: { status: string; merchant_id?: string };
+  rappi: { status: string; rappi_store_id?: string };
 }
 
 export default function IntegracoesPage() {
@@ -29,6 +30,12 @@ export default function IntegracoesPage() {
   const [appShopId, setAppShopId] = useState("");
   const [connecting, setConnecting] = useState(false);
   const [modalError, setModalError] = useState("");
+
+  const [showRappiModal, setShowRappiModal] = useState(false);
+  const [rappiToken, setRappiToken] = useState("");
+  const [rappiStoreId, setRappiStoreId] = useState("");
+  const [rappiConnecting, setRappiConnecting] = useState(false);
+  const [rappiModalError, setRappiModalError] = useState("");
 
   const fetchStatus = useCallback(async () => {
     if (!storeId) { setLoading(false); return; }
@@ -96,8 +103,42 @@ export default function IntegracoesPage() {
     }
   }
 
+  async function handleRappiConnect() {
+    if (!storeId || !rappiToken.trim() || !rappiStoreId.trim()) return;
+    setRappiConnecting(true);
+    setRappiModalError("");
+    try {
+      await api.post("/api/v1/connect/rappi/configure/", {
+        store_id: storeId,
+        rappi_token: rappiToken.trim(),
+        rappi_store_id: rappiStoreId.trim(),
+      });
+      setToast({ type: "success", msg: "Rappi conectado com sucesso!" });
+      setShowRappiModal(false);
+      setRappiToken("");
+      setRappiStoreId("");
+      fetchStatus();
+    } catch (err: unknown) {
+      setRappiModalError((err as { response?: { data?: { error?: string } } })?.response?.data?.error || "Erro ao conectar Rappi");
+    } finally {
+      setRappiConnecting(false);
+    }
+  }
+
+  async function handleRappiDisconnect() {
+    if (!storeId) return;
+    try {
+      await api.delete("/api/v1/connect/rappi/disconnect/", { data: { store_id: storeId } });
+      setToast({ type: "success", msg: "Rappi desconectado" });
+      fetchStatus();
+    } catch {
+      setToast({ type: "error", msg: "Erro ao desconectar Rappi" });
+    }
+  }
+
   const ifoodConnected = status?.ifood?.status === "connected";
   const nnConnected = status?.ninetynine?.status === "connected";
+  const rappiConnected = status?.rappi?.status === "connected";
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -119,7 +160,7 @@ export default function IntegracoesPage() {
         )}
 
         {!loading && storeId && (
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl">
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl">
             {/* iFood */}
             <Card padding="lg">
               <div className="flex items-center gap-4 mb-5">
@@ -177,6 +218,36 @@ export default function IntegracoesPage() {
                 <Button variant="accent" size="md" onClick={() => setShowModal(true)} className="w-full">Conectar 99Food</Button>
               )}
             </Card>
+
+            {/* Rappi */}
+            <Card padding="lg">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 rounded-xl bg-[#FF441F]/10 flex items-center justify-center ring-1 ring-inset ring-[#FF441F]/20">
+                  <span className="text-[#FF441F] font-bold text-lg">R</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-foreground">Rappi</h3>
+                  <p className="text-xs text-muted">Marketplace Rappi</p>
+                </div>
+                <Badge variant={rappiConnected ? "success" : "default"} dot>
+                  {rappiConnected ? "Conectado" : "Desconectado"}
+                </Badge>
+              </div>
+
+              {rappiConnected && status?.rappi?.rappi_store_id && (
+                <div className="text-xs text-muted bg-surface/50 rounded-lg px-3.5 py-2.5 mb-4 tabular-nums">
+                  Store ID: {status.rappi.rappi_store_id}
+                </div>
+              )}
+
+              {rappiConnected ? (
+                <Button variant="danger" size="sm" onClick={handleRappiDisconnect} className="w-full">Desconectar</Button>
+              ) : (
+                <button onClick={() => setShowRappiModal(true)} className="w-full h-10 bg-[#FF441F] text-white text-sm font-semibold rounded-lg hover:bg-[#E03A1A] transition-colors">
+                  Conectar Rappi
+                </button>
+              )}
+            </Card>
           </div>
         )}
       </div>
@@ -193,6 +264,21 @@ export default function IntegracoesPage() {
           {modalError && <Toast variant="error" message={modalError} />}
 
           <Button onClick={handle99FoodConnect} loading={connecting} disabled={!appShopId.trim()} className="w-full" size="lg">
+            Conectar
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Rappi Modal */}
+      <Modal open={showRappiModal} onClose={() => { setShowRappiModal(false); setRappiModalError(""); setRappiToken(""); setRappiStoreId(""); }} title="Conectar Rappi" description="Informe o token e Store ID fornecidos pela Rappi" icon={<Plug className="w-5 h-5 text-primary" />}>
+        <div className="space-y-4">
+          <Input label="Rappi Token" value={rappiToken} onChange={(e) => setRappiToken(e.target.value)} placeholder="Token fornecido pela Rappi" autoFocus />
+
+          <Input label="Store ID" value={rappiStoreId} onChange={(e) => setRappiStoreId(e.target.value)} placeholder="Ex: 12345" />
+
+          {rappiModalError && <Toast variant="error" message={rappiModalError} />}
+
+          <Button onClick={handleRappiConnect} loading={rappiConnecting} disabled={!rappiToken.trim() || !rappiStoreId.trim()} className="w-full" size="lg">
             Conectar
           </Button>
         </div>

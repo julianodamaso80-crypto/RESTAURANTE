@@ -425,4 +425,38 @@ SaaS multi-tenant. OAuthState com TTL de 10 minutos previne ataques CSRF.
 
 ---
 
-*Última atualização: PR 13 — próxima revisão obrigatória no PR 14.*
+## ADR-024 — Rappi Connector: webhook primário, token estático
+
+**Status:** ✅ IMPLEMENTADO (PR 16)
+
+**Decisão:**
+Rappi connector segue o mesmo padrão arquitetural de iFood/99Food: RawEvent compartilhado
+(source='rappi'), pipeline async via Celery, idempotência por `rappi:{event_id}`.
+
+Diferenças-chave vs iFood/99Food:
+1. **Auth por token estático** — Rappi fornece token por restaurante diretamente
+   (sem OAuth flow). Header: `x-authorization: Bearer <TOKEN>`.
+2. **Webhook como primário** — Rappi suporta webhooks nativamente via
+   `PUT /webhook/NEW_ORDER/change-url`. Polling como fallback (não implementado no MVP).
+3. **API proprietária** — Rappi NÃO usa Open Delivery Protocol.
+   Endpoints próprios (`/orders`, `/orders/{id}/take/{time}`, `/orders/{id}/reject`).
+4. **Stub mode** — `RAPPI_STUB_MODE=true` retorna dados fake para testes
+   sem credenciais reais.
+5. **Ambiente configurável** — `RappiStoreCredential.environment` alterna entre
+   prod (`microservices.rappi.com.br`) e dev (`microservices.dev.rappi.com`).
+
+**Razão:** Rappi é o terceiro maior marketplace de delivery no Brasil.
+Integração segue o padrão Open Delivery já estabelecido para iFood/99Food,
+com adaptações mínimas para a API proprietária da Rappi.
+
+**Consequências:**
+- `OrderChannel.RAPPI` adicionado ao enum (migration 0003).
+- `RappiStoreCredential` é OneToOne per Store (related_name='rappi_credential').
+- Webhook valida via `X-Rappi-Secret` header (quando configurado).
+- Connector isolado: `connectors/rappi/` só importa `ifood.models.RawEvent`.
+- Idempotency key format: `rappi:{event_id}`.
+- Endpoints REST: configure, status, disconnect (autenticados) + webhook (público).
+
+---
+
+*Última atualização: PR 16 — próxima revisão obrigatória no PR 17.*
