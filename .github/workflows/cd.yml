@@ -104,12 +104,26 @@ jobs:
     needs: [test]
 
     steps:
+      - name: Login to Easypanel
+        id: login
+        run: |
+          RESPONSE=$(curl -sk -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/auth.login" \
+            -H "Content-Type: application/json" \
+            -d '{"json": {"email": "${{ secrets.EASYPANEL_EMAIL }}", "password": "${{ secrets.EASYPANEL_PASSWORD }}"}}')
+          TOKEN=$(echo "$RESPONSE" | jq -r '.result.data.json.token')
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "::error::Easypanel login failed. Response: $RESPONSE"
+            exit 1
+          fi
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
       - name: Trigger Easypanel redeploy — restaurante
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          HTTP_STATUS=$(curl -sk -o /dev/null -w "%{http_code}" \
             -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/services.redeploy" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.EASYPANEL_API_KEY }}" \
+            -H "Authorization: Bearer ${{ steps.login.outputs.token }}" \
             -d '{"projectName":"projetos","serviceName":"restaurante"}')
           echo "Easypanel responded with HTTP $HTTP_STATUS"
           if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
@@ -129,12 +143,26 @@ jobs:
     needs: [test]
 
     steps:
+      - name: Login to Easypanel
+        id: login
+        run: |
+          RESPONSE=$(curl -sk -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/auth.login" \
+            -H "Content-Type: application/json" \
+            -d '{"json": {"email": "${{ secrets.EASYPANEL_EMAIL }}", "password": "${{ secrets.EASYPANEL_PASSWORD }}"}}')
+          TOKEN=$(echo "$RESPONSE" | jq -r '.result.data.json.token')
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "::error::Easypanel login failed. Response: $RESPONSE"
+            exit 1
+          fi
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
       - name: Trigger Easypanel redeploy — restaurante-frontend
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          HTTP_STATUS=$(curl -sk -o /dev/null -w "%{http_code}" \
             -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/services.redeploy" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.EASYPANEL_API_KEY }}" \
+            -H "Authorization: Bearer ${{ steps.login.outputs.token }}" \
             -d '{"projectName":"projetos","serviceName":"restaurante-frontend"}')
           echo "Easypanel responded with HTTP $HTTP_STATUS"
           if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
@@ -158,12 +186,26 @@ jobs:
         service: [restaurante-worker, restaurante-beat]
 
     steps:
+      - name: Login to Easypanel
+        id: login
+        run: |
+          RESPONSE=$(curl -sk -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/auth.login" \
+            -H "Content-Type: application/json" \
+            -d '{"json": {"email": "${{ secrets.EASYPANEL_EMAIL }}", "password": "${{ secrets.EASYPANEL_PASSWORD }}"}}')
+          TOKEN=$(echo "$RESPONSE" | jq -r '.result.data.json.token')
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "::error::Easypanel login failed. Response: $RESPONSE"
+            exit 1
+          fi
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
       - name: Trigger Easypanel redeploy — ${{ matrix.service }}
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          HTTP_STATUS=$(curl -sk -o /dev/null -w "%{http_code}" \
             -X POST "${{ secrets.EASYPANEL_URL }}/api/trpc/services.redeploy" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.EASYPANEL_API_KEY }}" \
+            -H "Authorization: Bearer ${{ steps.login.outputs.token }}" \
             -d '{"projectName":"projetos","serviceName":"${{ matrix.service }}"}')
           echo "Easypanel responded with HTTP $HTTP_STATUS"
           if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then

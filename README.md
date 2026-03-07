@@ -788,14 +788,14 @@ Configurar em **Settings > Secrets and variables > Actions**:
 | Secret | Descricao | Exemplo |
 |---|---|---|
 | `EASYPANEL_URL` | URL base do Easypanel (sem barra final) | `https://31.97.30.227:3000` |
-| `EASYPANEL_API_KEY` | API key do Easypanel (Settings > API) | `ep_...` |
+| `EASYPANEL_EMAIL` | Email do admin do Easypanel | `admin@example.com` |
+| `EASYPANEL_PASSWORD` | Senha do admin do Easypanel | `sua-senha` |
 
-### Gerar API key no Easypanel
+### Autenticacao no Easypanel
 
-1. Acesse o painel do Easypanel
-2. Va em **Settings > API**
-3. Clique em **Generate API Key**
-4. Copie a key e adicione como secret `EASYPANEL_API_KEY` no GitHub
+O CD pipeline autentica via JWT. Antes de cada redeploy, faz login no endpoint
+`/api/trpc/auth.login` com email e senha, extrai o token JWT da resposta, e usa
+como `Authorization: Bearer <token>` nas chamadas de redeploy.
 
 ### Servicos no Easypanel
 
